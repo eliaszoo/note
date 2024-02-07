@@ -188,10 +188,14 @@ WatchDog是容器内的常驻进程，作为函数的entry point，接收来自�
 ## of-watchdog
 ![Alt text](image/openfaas/of-watchdog.png)
 此模式下，函数是以http服务的形式启动并常驻，仅创建一次函数进程，然后作为watchdog的上游服务器提供服务。
+
 这种模式性能更优，更适合流式的应用场景。
 
 Ref:
+
 https://docs.openfaas.com/architecture/gateway/
+
 https://github.com/openfaas/faas
+
 https://atbug.com/openfaas-case-study-zh/
 
