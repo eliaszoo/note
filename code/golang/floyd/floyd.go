@@ -9,13 +9,15 @@ type Graph struct {
 	Matrix       [][]int      // 邻接矩阵
 	Vertices     []byte       // 顶点
 	Vertex2Index map[byte]int // 记录顶点的下标
+	IsDirected   bool
 }
 
-func NewGraph(vertices []byte) *Graph {
+func NewGraph(vertices []byte, directed bool) *Graph {
 	g := &Graph{
 		Matrix:       make([][]int, len(vertices)),
 		Vertices:     vertices,
 		Vertex2Index: make(map[byte]int),
+		IsDirected:   directed,
 	}
 
 	for i := 0; i < len(vertices); i++ {
@@ -42,6 +44,9 @@ func (g *Graph) AddEdge(src, dst byte, weight int) {
 	srcIndex := g.Vertex2Index[src]
 	dstIndex := g.Vertex2Index[dst]
 	g.Matrix[srcIndex][dstIndex] = weight
+	if !g.IsDirected {
+		g.Matrix[dstIndex][srcIndex] = weight
+	}
 }
 
 func (g *Graph) Floyd() ([][]int, [][]int) {
@@ -85,7 +90,7 @@ func getPath(path [][]int, i, j int, s *[]int) {
 	getPath(path, k, j, s) // 获取 k ~ j 的路径
 }
 
-func printMatrix(m [][]int) {
+func PrintMatrix(m [][]int) {
 	for i := 0; i < len(m); i++ {
 		fmt.Println(m[i])
 	}
@@ -93,7 +98,7 @@ func printMatrix(m [][]int) {
 
 func main() {
 	vertices := []byte{'a', 'b', 'c', 'd', 'e', 'f'}
-	g := NewGraph(vertices)
+	g := NewGraph(vertices, true)
 	g.AddEdge('a', 'b', 10)
 	g.AddEdge('b', 'd', 8)
 	g.AddEdge('d', 'f', 2)
@@ -102,8 +107,8 @@ func main() {
 	g.AddEdge('e', 'f', 4)
 	g.AddEdge('e', 'd', 1)
 	distance, path := g.Floyd()
-	printMatrix(distance)
-	printMatrix(path)
+	PrintMatrix(distance)
+	PrintMatrix(path)
 
 	af := make([]int, 0)
 	getPath(path, 0, 5, &af)
