@@ -1,11 +1,25 @@
 package main
 
-func collect(digits, s string, index int, ret []string) {
+import "fmt"
+
+var hash = map[string]string{
+	"1": "",
+	"2": "abc",
+	"3": "def",
+	"4": "ghi",
+	"5": "jkl",
+	"6": "mno",
+	"7": "pqrs",
+	"8": "tuv",
+	"9": "wxyz",
+}
+
+func collect(digits, s string, index int, ret *[]string) {
 	if len(digits) == index {
-		ret = append(ret, s)
+		*ret = append(*ret, s)
 		return
 	}
-	for _, c := range digits {
+	for _, c := range hash[string(digits[index])] {
 		collect(digits, s+string(c), index+1, ret)
 	}
 }
@@ -13,10 +27,11 @@ func collect(digits, s string, index int, ret []string) {
 func letterCombinations(digits string) []string {
 	var s string
 	ret := make([]string, 0)
-	collect(digits, s, 0, ret)
+	collect(digits, s, 0, &ret)
 	return ret
 }
 
 func main() {
-
+	strs := letterCombinations("23")
+	fmt.Println(strs)
 }
