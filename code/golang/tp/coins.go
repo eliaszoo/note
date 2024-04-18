@@ -37,7 +37,58 @@ func CoinChange(coins []int, amount int) int {
 
 }
 
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func backup(weight []int, score []int, cw int) int {
+	tp := make([][]int, len(weight))
+	for i := 0; i < len(weight); i++ {
+		tp[i] = make([]int, cw+1)
+	}
+
+	for j := 1; j <= cw; j++ {
+		for i := 0; i < len(weight); i++ {
+			if i > 0 && tp[i-1][j] > tp[i][j] {
+				tp[i][j] = tp[i-1][j]
+			}
+
+			if j-weight[i] >= 0 && tp[i][j-weight[i]]+score[i] > tp[i][j] {
+				tp[i][j] = tp[i][j-weight[i]] + score[i]
+			}
+		}
+	}
+
+	return tp[len(weight)-1][cw]
+}
+
+func cut(values []int, n int) int {
+	tp := make([]int, n+1)
+	tp[0] = 0
+	for k := 1; k <= n; k++ {
+		max := -1
+		for i, val := range values {
+			l := i + 1
+			if k >= l {
+				if tp[k-l]+val > max {
+					max = tp[k-l] + val
+				}
+			} else {
+				break
+			}
+		}
+		tp[k] = max
+	}
+	return tp[n]
+}
+
 func main() {
-	val := CoinChange([]int{1, 2, 5}, 11)
+	val := cut([]int{1, 5, 8, 9, 10}, 4)
 	fmt.Println(val)
+
+	max := backup([]int{1, 2, 3, 4}, []int{1, 5, 8, 9}, 4)
+	fmt.Println(max)
 }
