@@ -85,6 +85,24 @@ func cut(values []int, n int) int {
 	return tp[n]
 }
 
+func lengthOfLIS(nums []int) int {
+	if len(nums) == 0 {
+		return 0
+	}
+
+	tp := make([]int, len(nums)+1)
+	tp[0] = 0
+	tp[1] = 1
+	for k := 2; k <= len(nums); k++ {
+		for i := 0; i < k-1; i++ {
+			if nums[k-1] > nums[i] {
+				tp[k] = max(tp[k], tp[i+1]+1)
+			}
+		}
+	}
+	return tp[len(nums)]
+}
+
 func main() {
 	val := cut([]int{1, 5, 8, 9, 10}, 4)
 	fmt.Println(val)
