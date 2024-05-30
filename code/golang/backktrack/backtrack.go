@@ -31,7 +31,38 @@ func letterCombinations(digits string) []string {
 	return ret
 }
 
+func premuteFunc(arr []int, path []int, used []bool, ret *[][]int) {
+	if len(path) == len(arr) {
+		tmp := make([]int, len(arr))
+		copy(tmp, path)
+		*ret = append(*ret, tmp)
+		return
+	}
+
+	for i := 0; i < len(arr); i++ {
+		if (used)[i] {
+			continue
+		}
+
+		path = append(path, arr[i])
+		(used)[i] = true
+		premuteFunc(arr, path, used, ret)
+		path = (path)[:len(path)-1]
+		(used)[i] = false
+	}
+}
+
+func permute(arr []int) [][]int {
+	ret := make([][]int, 0)
+	used := make([]bool, len(arr))
+	path := make([]int, 0)
+	premuteFunc(arr, path, used, &ret)
+	return ret
+}
+
 func main() {
 	strs := letterCombinations("23")
 	fmt.Println(strs)
+
+	fmt.Println(permute([]int{1, 2, 3}))
 }
