@@ -37,6 +37,22 @@ func CoinChange(coins []int, amount int) int {
 
 }
 
+func cut2(p []int, n int) int {
+	dp := make([]int, n+1)
+	for i := 1; i <= n; i++ {
+		q := -1
+		for j := 1; j <= i; j++ {
+			q = max(q, dp[i-j]+p[j-1])
+		}
+		dp[i] = q
+	}
+	return dp[n]
+}
+
+func bridge(t []int) int {
+
+}
+
 func max(a, b int) int {
 	if a > b {
 		return a
