@@ -60,9 +60,33 @@ func permute(arr []int) [][]int {
 	return ret
 }
 
+func backtracking2(n, k, start int, numbers *[]int, ret *[][]int) {
+	if len(*numbers) == k {
+		tmp := make([]int, len(*numbers))
+		copy(tmp, *numbers)
+		*ret = append(*ret, tmp)
+		return
+	}
+
+	for i := start; i <= n; i++ {
+		*numbers = append(*numbers, i)
+		backtracking2(n, k, i+1, numbers, ret)
+		*numbers = (*numbers)[:len(*numbers)-1]
+	}
+}
+
+func backtracking(n, k int) [][]int {
+	ret := make([][]int, 0)
+	var nums []int
+	backtracking2(n, k, 1, &nums, &ret)
+	return ret
+}
+
 func main() {
-	strs := letterCombinations("23")
+	/*strs := letterCombinations("23")
 	fmt.Println(strs)
 
-	fmt.Println(permute([]int{1, 2, 3}))
+	fmt.Println(permute([]int{1, 2, 3}))*/
+
+	fmt.Println(backtracking(4, 2))
 }
