@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
 
 var hash = map[string]string{
 	"1": "",
@@ -12,6 +15,33 @@ var hash = map[string]string{
 	"7": "pqrs",
 	"8": "tuv",
 	"9": "wxyz",
+}
+
+func digits(s string) []string {
+	ret := make([]string, 0)
+	var path string
+	digitsBacktracking(s, len(s), 0, path, &ret)
+	return ret
+}
+
+func digitsBacktracking(s string, k int, start int, path string, ret *[]string) {
+	if len(path) == k {
+		*ret = append(*ret, path)
+		return
+	}
+
+	for i := start; i < len(s); i++ {
+		chars, ok := hash[string(s[i])]
+		if !ok {
+			continue
+		}
+
+		for _, char := range chars {
+			path += string(char)
+			digitsBacktracking(s, k, i+1, path, ret)
+			path = path[:len(path)-1]
+		}
+	}
 }
 
 func collect(digits, s string, index int, ret *[]string) {
@@ -82,11 +112,74 @@ func backtracking(n, k int) [][]int {
 	return ret
 }
 
+func candidates(candidates []int, target int) [][]int {
+	var ret [][]int
+	var path []int
+	candidatesBacktracking(candidates, target, 0, 0, &path, &ret)
+	return ret
+}
+
+func candidatesBacktracking(candidates []int, target int, sum int, start int, path *[]int, ret *[][]int) {
+	if sum > target {
+		return
+	} else if sum == target {
+		tmp := make([]int, len(*path))
+		copy(tmp, *path)
+		*ret = append(*ret, tmp)
+		return
+	}
+
+	for i := start; i < len(candidates); i++ {
+		sum += candidates[i]
+		*path = append(*path, candidates[i])
+		candidatesBacktracking(candidates, target, sum, i, path, ret)
+		*path = (*path)[:len(*path)-1]
+		sum -= candidates[i]
+	}
+}
+
+func candidates2(candidates []int, target int) [][]int {
+	var ret [][]int
+	var path []int
+	sort.Ints(candidates)
+	candidatesBacktracking2(candidates, target, 0, 0, &path, &ret)
+	return ret
+}
+
+func candidatesBacktracking2(candidates []int, target int, sum int, start int, path *[]int, ret *[][]int) {
+	if sum > target {
+		return
+	} else if sum == target {
+		tmp := make([]int, len(*path))
+		copy(tmp, *path)
+		*ret = append(*ret, tmp)
+		return
+	}
+
+	for i := start; i < len(candidates); i++ {
+		if sum+candidates[i] > target {
+			break
+		}
+		if i > start && candidates[i] == candidates[i-1] {
+			continue
+		}
+		sum += candidates[i]
+		*path = append(*path, candidates[i])
+		candidatesBacktracking2(candidates, target, sum, i+1, path, ret)
+		*path = (*path)[:len(*path)-1]
+		sum -= candidates[i]
+	}
+}
+
 func main() {
 	/*strs := letterCombinations("23")
 	fmt.Println(strs)
 
 	fmt.Println(permute([]int{1, 2, 3}))*/
 
-	fmt.Println(backtracking(4, 2))
+	//fmt.Println(backtracking(4, 2))
+
+	//fmt.Println(candidates([]int{2, 3, 5}, 8))
+	//fmt.Println(candidates2([]int{10, 1, 2, 7, 6, 1, 5}, 8))
+	fmt.Println(digits("234"))
 }
