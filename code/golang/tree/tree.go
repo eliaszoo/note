@@ -141,6 +141,40 @@ func traverG(root *TreeNode) []int {
 	return ret
 }
 
+func traverG2(root *TreeNode) [][]int {
+	ret := make([][]int, 0)
+	queue := make([]*TreeNode, 0)
+	queue = append(queue, root)
+	var path []int
+	for len(queue) > 0 {
+		size := len(queue)
+		for i := 0; i < size; i++ {
+			cur := queue[0]
+			queue = queue[1:]
+			path = append(path, cur.Val)
+			if cur.Left != nil {
+				queue = append(queue, cur.Left)
+			}
+			if cur.Right != nil {
+				queue = append(queue, cur.Right)
+			}
+		}
+		ret = append(ret, path)
+		path = nil
+	}
+	return ret
+}
+
+func swap(root *TreeNode) {
+	if root == nil {
+		return
+	}
+
+	root.Left, root.Right = root.Right, root.Left
+	swap(root.Left)
+	swap(root.Right)
+}
+
 func main() {
 	root := build([]int{1, 2, 3, 4, 5, 6, 7}, 0)
 	var tmp []int
@@ -166,4 +200,8 @@ func main() {
 	fmt.Println(tmp)
 
 	fmt.Println(traverG(root))
+
+	swap(root)
+	fmt.Println(traverG(root))
+	fmt.Println(traverG2(root))
 }

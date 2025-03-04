@@ -171,6 +171,100 @@ func candidatesBacktracking2(candidates []int, target int, sum int, start int, p
 	}
 }
 
+func isHuiWen(s string) bool {
+	start := 0
+	end := len(s) - 1
+
+	for start < end {
+		if s[start] != s[end] {
+			return false
+		}
+
+		start++
+		end--
+	}
+
+	return true
+}
+
+func subHuiWen(s string) []string {
+	ret := make([]string, 0)
+	var path string
+	subHuiWenBacktracking(s, path, 0, &ret)
+	return ret
+}
+
+func subHuiWenBacktracking(s string, path string, start int, ret *[]string) {
+	if isHuiWen(path) {
+		*ret = append(*ret, path)
+	} else {
+		return
+	}
+
+	for i := start; i < len(s); i++ {
+		path += string(s[i])
+		subHuiWenBacktracking(s, path, i+1, ret)
+		path = path[:len(path)-1]
+	}
+}
+
+func subHuiWen2(s string) [][]string {
+	ret := make([][]string, 0)
+	/*var path []string
+	subHuiWenBacktracking2(s, &path, 0, 0, &ret)*/
+	return ret
+}
+
+func subHuiWenBacktracking2(s string, path *[]string, tmp string, start, l int, ret *[][]string) {
+	/*if l == len(s) {
+		tmp := make([]string, len(*path))
+		copy(tmp, *path)
+		*ret = append(*ret, tmp)
+		return
+	}
+
+	for i := start; i < len(s); i++ {
+		tmp += string(s[i])
+		subHuiWenBacktracking(s, path, tmp, i+1, , ret)
+		tmp = tmp[:len(tmp)-1]
+	}*/
+}
+
+func threeSum(nums []int) [][]int {
+	sort.Ints(nums)
+	ret := make([][]int, 0)
+	for i := 0; i < len(nums); i++ {
+		target := 0 - nums[i]
+		if i > 0 && nums[i] == nums[i-1] {
+			continue
+		}
+
+		left := i + 1
+		right := len(nums) - 1
+		for left < right {
+			sum := nums[left] + nums[right]
+			if sum == target {
+				arr := []int{nums[i], nums[left], nums[right]}
+				ret = append(ret, arr)
+				left++
+				right--
+				for left < right && nums[left] == nums[left-1] {
+					left++
+				}
+				for left < right && nums[right] == nums[right+1] {
+					right--
+				}
+			} else if sum < target {
+				left++
+			} else {
+				right--
+			}
+		}
+	}
+
+	return ret
+}
+
 func main() {
 	/*strs := letterCombinations("23")
 	fmt.Println(strs)
@@ -181,5 +275,7 @@ func main() {
 
 	//fmt.Println(candidates([]int{2, 3, 5}, 8))
 	//fmt.Println(candidates2([]int{10, 1, 2, 7, 6, 1, 5}, 8))
-	fmt.Println(digits("234"))
+	//fmt.Println(digits("234"))
+	//fmt.Println(subHuiWen("aab"))
+	fmt.Println(threeSum([]int{-2, 0, 1, 1, 2}))
 }
