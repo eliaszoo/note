@@ -15,6 +15,9 @@ func build(a []int, index int) *TreeNode {
 	if index >= len(a) {
 		return nil
 	}
+	if a[index] == -1 {
+		return nil
+	}
 
 	root := &TreeNode{Val: a[index], Left: nil, Right: nil}
 	root.Left = build(a, 2*index+1)
@@ -222,6 +225,60 @@ func minHeight(root *TreeNode) int {
 	return int(math.Min(float64(l), float64(r)))
 }
 
+func hasPathSum2(root *TreeNode, targetSum, cur int) bool {
+	if root.Left == nil && root.Right == nil {
+		return cur+root.Val == targetSum
+	}
+
+	cur += root.Val
+	var l, r bool
+	if root.Left != nil {
+		l = hasPathSum2(root.Left, targetSum, cur)
+	}
+	if root.Right != nil {
+		r = hasPathSum2(root.Right, targetSum, cur)
+	}
+	return l || r
+}
+
+func hasPathSum(root *TreeNode, targetSum int) bool {
+	if root == nil {
+		return false
+	}
+	return hasPathSum2(root, targetSum, 0)
+}
+
+/*func flatten(root *TreeNode) {
+	if root == nil {
+		return
+	}
+
+	tmpR := root.Right
+	root.Right = root.Left
+	flatten(root.Left)
+
+}*/
+
+func buildTree(preorder []int, inorder []int) *TreeNode {
+	if len(preorder) == 0 || len(inorder) == 0 {
+		return nil
+	}
+	root := &TreeNode{
+		Val: preorder[0],
+	}
+
+	index := 0
+	for ; index < len(inorder); index++ {
+		if inorder[index] == root.Val {
+			break
+		}
+	}
+
+	root.Left = buildTree(preorder[1:index+1], inorder[:index])
+	root.Right = buildTree(preorder[index+1:], inorder[index+1:])
+	return root
+}
+
 func main() {
 	root := build([]int{1, 2, 3, 4, 5, 6, 7}, 0)
 	var tmp []int
@@ -259,6 +316,10 @@ func main() {
 	fmt.Println(height(root))
 	fmt.Println(height(root2))
 
-	root3 := build([]int{1, 2, 3, 4}, 0)
-	fmt.Println(MinHeight(root3))
+	root3 := build([]int{5, 4, 8, 11, -1, 13, 4, 7, 2, -1, -1, -1, 1}, 0)
+	fmt.Println(traverG2(root3))
+	fmt.Println(hasPathSum(root3, 22))
+
+	root4 := buildTree([]int{1, 2, 4, 5, 3}, []int{4, 2, 5, 1, 3})
+	fmt.Println(traverG2(root4))
 }
