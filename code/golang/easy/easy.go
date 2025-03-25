@@ -45,16 +45,15 @@ func isValid(s string) bool {
 }
 
 // 滑动窗口中的最大值
-func slidingMax(a []int, k int) []int {
-	ret := make([]int, 0, len(a))
+func maxSlidingWindow(nums []int, k int) []int {
+	ret := make([]int, 0, len(nums))
 	queue := make([]int, 0)
-	queue = append(queue, a[0])
-	for i := 1; i < len(a); i++ {
-		if a[i] > queue[0] {
+	for i := 0; i < len(nums); i++ {
+		if len(queue) > 0 && (nums[i] > queue[0] || len(queue) >= k) {
 			queue = queue[:0]
-			queue = append(queue, a[i])
+			queue = append(queue, nums[i])
 		} else {
-			queue = append(queue, a[i])
+			queue = append(queue, nums[i])
 		}
 
 		if i >= k-1 {
@@ -71,5 +70,6 @@ func main() {
 
 	fmt.Println(isValid("()"))
 
-	fmt.Println(slidingMax([]int{1, 3, -1, -3, 5, 3, 6, 7}, 3))
+	//fmt.Println(maxSlidingWindow([]int{1, 3, -1, -3, 5, 3, 6, 7}, 3))
+	fmt.Println(maxSlidingWindow([]int{1, 3, 1, 2, 0, 5}, 3))
 }

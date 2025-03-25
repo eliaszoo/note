@@ -62,11 +62,51 @@ func findLastKth(head *ListNode, k int) *ListNode {
 	return slow
 }
 
+func getNode(head *ListNode, n int) *ListNode {
+	fast := head
+	for i := 0; i < n-1; i++ {
+		fast = fast.Next
+	}
+	return fast
+}
+
+func reverseBetween(head *ListNode, left int, right int) *ListNode {
+	if left == right {
+		return head
+	}
+	tmp := &ListNode{Val: -1}
+	tmp.Next = head
+
+	left += 1
+	right += 1
+
+	lPrev := getNode(tmp, left-1)
+	l := lPrev.Next
+	r := getNode(tmp, right)
+	rNext := r.Next
+	r.Next = nil
+	nw := reverse2(lPrev.Next)
+	lPrev.Next = nw
+	l.Next = rNext
+	return tmp.Next
+}
+
+func reverse2(head *ListNode) *ListNode {
+	if head.Next == nil {
+		return head
+	}
+
+	node := reverse2(head.Next)
+	head.Next.Next = head
+	head.Next = nil
+	return node
+}
+
 func main() {
-	list := NewList([]int{1, 2, 3, 4, 5, 6, 7, 8})
+	list := NewList([]int{1, 2})
 	PrintList(list)
 
-	fmt.Println("")
+	/*fmt.Println("")
 	rvList := reverse(list)
 	PrintList(rvList)
 
@@ -77,6 +117,7 @@ func main() {
 		fmt.Println("not found")
 	} else {
 		fmt.Println(node.Val)
-	}
+	}*/
 
+	fmt.Println(reverseBetween(list, 1, 2))
 }

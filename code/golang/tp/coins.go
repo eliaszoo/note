@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 func min(arr []int) int {
 	min := 0x7fffffff
@@ -50,7 +53,7 @@ func cut2(p []int, n int) int {
 }
 
 func bridge(t []int) int {
-
+	return 0
 }
 
 func max(a, b int) int {
@@ -119,10 +122,74 @@ func lengthOfLIS(nums []int) int {
 	return tp[len(nums)]
 }
 
+func wordBreak(s string, wordDict []string) bool {
+	dp := make([]bool, len(s)+1)
+	dp[0] = true
+
+	for i := 1; i <= len(s); i++ {
+		var ok = false
+		for j := 0; j < len(wordDict); j++ {
+			if i >= len(wordDict[j]) {
+				if s[i-len(wordDict[j]):i] == wordDict[j] {
+					ok = dp[i-len(wordDict[j])]
+					if ok {
+						break
+					}
+				}
+			}
+		}
+		dp[i] = ok
+	}
+
+	return dp[len(s)]
+}
+
+func min2(a, b int) int {
+	if a > b {
+		return b
+	}
+	return a
+}
+
+func minimumTotal(triangle [][]int) int {
+	dp := make([][]int, len(triangle))
+	for i := 0; i < len(dp); i++ {
+		dp[i] = make([]int, len(triangle[i]))
+
+		for j := 0; j < len(dp[i]); j++ {
+			dp[i][j] = math.MaxInt
+		}
+	}
+
+	dp[0][0] = triangle[0][0]
+	for i := 1; i < len(triangle); i++ {
+		for j := 0; j < len(triangle[i]); j++ {
+			if j < len(dp[i-1]) {
+				dp[i][j] = dp[i-1][j] + triangle[i][j]
+			}
+
+			if j > 0 {
+				dp[i][j] = min2(dp[i][j], dp[i-1][j-1]+triangle[i][j])
+			}
+		}
+	}
+
+	last := len(triangle) - 1
+	m := dp[last][0]
+	for j := 1; j < len(triangle[last]); j++ {
+		m = min2(m, dp[last][j])
+	}
+
+	return m
+}
+
 func main() {
-	val := cut([]int{1, 5, 8, 9, 10}, 4)
+	/*val := cut([]int{1, 5, 8, 9, 10}, 4)
 	fmt.Println(val)
 
 	max := backup([]int{1, 2, 3, 4}, []int{1, 5, 8, 9}, 4)
-	fmt.Println(max)
+	fmt.Println(max)*/
+
+	fmt.Println(wordBreak("catsandog", []string{"cats", "dog", "sand", "and", "cat"}))
+	fmt.Println(minimumTotal([][]int{{2}, {3, 4}, {6, 5, 7}, {4, 1, 8, 3}}))
 }
