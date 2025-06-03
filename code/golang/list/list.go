@@ -102,15 +102,124 @@ func reverse2(head *ListNode) *ListNode {
 	return node
 }
 
+func swapPairs(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+
+	tmp := &ListNode{
+		Val:  0,
+		Next: head,
+	}
+	t := tmp
+	p := head
+	for p != nil && p.Next != nil {
+		old := p.Next
+		q := p.Next.Next
+		p.Next.Next = p
+		p.Next = q
+
+		t.Next = old
+		t = p
+		p = q
+	}
+	return tmp.Next
+}
+
+func reverseKGroup(head *ListNode, k int) *ListNode {
+	dummy := &ListNode{
+		Next: head,
+	}
+	pre := dummy
+	next := head
+	h, t := head, head
+	for {
+		i := 0
+		for ; i < k-1 && t != nil; i++ {
+			t = t.Next
+		}
+		if t == nil || i < k-1 {
+			break
+		}
+		next = t.Next
+
+		t.Next = nil
+		pre.Next = reverse(h)
+		h.Next = next
+
+		pre = h
+		t = next
+		h = next
+	}
+	return dummy.Next
+}
+
+func sortList(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+
+	mid := getMiddle(head)
+	rh := mid.Next
+	mid.Next = nil
+	l1 := sortList(head)
+	l2 := sortList(rh)
+	l := merge(l1, l2)
+	return l
+}
+
+func getMiddle(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+	slow := head
+	fast := head.Next.Next
+	for fast != nil && fast.Next != nil {
+		slow = slow.Next
+		fast = fast.Next.Next
+	}
+	return slow
+}
+
+func merge(l1, l2 *ListNode) *ListNode {
+	dummy := new(ListNode)
+	p, q := l1, l2
+	c := dummy
+	for p != nil && q != nil {
+		if p.Val < q.Val {
+			c.Next = p
+			p = p.Next
+		} else {
+			c.Next = q
+			q = q.Next
+		}
+		c = c.Next
+	}
+	for ; p != nil; p = p.Next {
+		c.Next = p
+		c = c.Next
+	}
+	for ; q != nil; q = q.Next {
+		c.Next = q
+		c = c.Next
+	}
+	return dummy.Next
+}
+
 func main() {
-	list := NewList([]int{1, 2})
+	list := NewList([]int{1, 2, 3, 4, 5})
 	PrintList(list)
+	fmt.Println("-----\n")
+
+	//PrintList(reverseKGroup(list, 2))
+
+	PrintList(sortList(NewList([]int{4, 2, 1, 3})))
 
 	/*fmt.Println("")
 	rvList := reverse(list)
-	PrintList(rvList)
+	PrintList(rvList)*/
 
-	fmt.Println("")
+	/*fmt.Println("")
 
 	node := findLastKth(rvList, 8)
 	if node == nil {
@@ -119,5 +228,6 @@ func main() {
 		fmt.Println(node.Val)
 	}*/
 
-	fmt.Println(reverseBetween(list, 1, 2))
+	//fmt.Println(reverseBetween(list, 1, 2))
+	//PrintList(swapPairs(list))
 }

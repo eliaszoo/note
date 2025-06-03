@@ -183,6 +183,52 @@ func minimumTotal(triangle [][]int) int {
 	return m
 }
 
+func backup01(cap int, weight []int, score []int) int {
+	dp := make([]int, cap+1)
+	dp[0] = 0
+	for i := 0; i < len(weight); i++ {
+		for j := cap; j >= 1; j-- {
+			if j >= weight[i] {
+				dp[j] = max(dp[j], dp[j-weight[i]]+score[i])
+			}
+		}
+		fmt.Println(dp)
+	}
+	return dp[cap]
+}
+
+// 有多少种换法
+func coinChange(coins []int, amount int) int {
+	dp := make([]int, amount+1)
+	dp[0] = 1
+	for i := 1; i <= amount; i++ {
+		for j := 0; j < len(coins); j++ {
+			if i >= coins[j] {
+				dp[i] += dp[i-coins[j]]
+			}
+		}
+
+		fmt.Println(dp)
+	}
+	return dp[amount]
+}
+
+func coinChange2(coins []int, amount int) int {
+	dp := make([]int, amount+1)
+	dp[0] = 1
+
+	for j := 0; j < len(coins); j++ {
+		for i := 1; i <= amount; i++ {
+			if i >= coins[j] {
+				dp[i] += dp[i-coins[j]]
+			}
+		}
+
+		fmt.Println(dp)
+	}
+	return dp[amount]
+}
+
 func main() {
 	/*val := cut([]int{1, 5, 8, 9, 10}, 4)
 	fmt.Println(val)
@@ -190,6 +236,10 @@ func main() {
 	max := backup([]int{1, 2, 3, 4}, []int{1, 5, 8, 9}, 4)
 	fmt.Println(max)*/
 
-	fmt.Println(wordBreak("catsandog", []string{"cats", "dog", "sand", "and", "cat"}))
-	fmt.Println(minimumTotal([][]int{{2}, {3, 4}, {6, 5, 7}, {4, 1, 8, 3}}))
+	//fmt.Println(wordBreak("catsandog", []string{"cats", "dog", "sand", "and", "cat"}))
+	//fmt.Println(minimumTotal([][]int{{2}, {3, 4}, {6, 5, 7}, {4, 1, 8, 3}}))
+	//fmt.Println(backup01(3, []int{1, 2, 3}, []int{15, 20, 30}))
+	fmt.Println(coinChange([]int{1, 2, 5}, 5))
+	fmt.Println("-----------")
+	fmt.Println(coinChange2([]int{1, 2, 5}, 5))
 }

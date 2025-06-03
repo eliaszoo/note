@@ -63,6 +63,29 @@ func maxSlidingWindow(nums []int, k int) []int {
 	return ret
 }
 
+func merge(nums1 []int, m int, nums2 []int, n int) {
+	i := m - 1
+	j := n - 1
+	idx := m + n - 1
+	for ; i >= 0 || j >= 0; idx-- {
+		if i < 0 {
+			nums1[idx] = nums2[j]
+			j--
+		} else if j < 0 {
+			nums1[idx] = nums1[i]
+			i--
+		} else {
+			if nums1[i] > nums2[j] {
+				nums1[idx] = nums1[i]
+				i--
+			} else {
+				nums1[idx] = nums2[j]
+				j--
+			}
+		}
+	}
+}
+
 func main() {
 	a := []int{3, 2, 2, 3}
 	fmt.Println(removeElement(a, 3))
@@ -72,4 +95,8 @@ func main() {
 
 	//fmt.Println(maxSlidingWindow([]int{1, 3, -1, -3, 5, 3, 6, 7}, 3))
 	fmt.Println(maxSlidingWindow([]int{1, 3, 1, 2, 0, 5}, 3))
+
+	b := []int{1, 2, 3, 0, 0, 0}
+	merge(b, 3, []int{2, 5, 6}, 3)
+	fmt.Println(b)
 }

@@ -265,6 +265,91 @@ func threeSum(nums []int) [][]int {
 	return ret
 }
 
+func exist(board [][]byte, word string) bool {
+	used := make([][]bool, len(board))
+	for i := 0; i < len(board); i++ {
+		used[i] = make([]bool, len(board[0]))
+	}
+
+	for i := 0; i < len(board); i++ {
+		for j := 0; j < len(board[i]); j++ {
+			if board[i][j] == word[0] {
+				used[i][j] = true
+				if dfs(board, used, i, j, 0, word) {
+					return true
+				}
+				used[i][j] = false
+			}
+		}
+	}
+	return false
+}
+
+func dfs(board [][]byte, used [][]bool, i, j, target int, word string) bool {
+	if board[i][j] != word[target] {
+		return false
+	}
+
+	if target == len(word)-1 {
+		return true
+	}
+
+	ret := false
+	if j > 0 && !used[i][j-1] {
+		used[i][j-1] = true
+		ret = dfs(board, used, i, j-1, target+1, word) || ret
+		used[i][j-1] = false
+	}
+
+	if j < len(board[0])-1 && !used[i][j+1] {
+		used[i][j+1] = true
+		ret = dfs(board, used, i, j+1, target+1, word) || ret
+		used[i][j+1] = false
+	}
+
+	if i > 0 && !used[i-1][j] {
+		used[i-1][j] = true
+		ret = dfs(board, used, i-1, j, target+1, word) || ret
+		used[i-1][j] = false
+	}
+
+	if i < len(board)-1 && !used[i+1][j] {
+		used[i+1][j] = true
+		ret = dfs(board, used, i+1, j, target+1, word) || ret
+		used[i+1][j] = false
+	}
+
+	return ret
+}
+
+func combinationSum(candidates []int, target int) [][]int {
+	var (
+		ret  [][]int
+		path []int
+	)
+	backtrack(candidates, target, 0, &ret, &path, 0)
+	return ret
+}
+
+func backtrack(candidates []int, target int, start int, ret *[][]int, path *[]int, sum int) {
+	if sum == target {
+		tmp := make([]int, len(*path))
+		copy(tmp, *path)
+		*ret = append(*ret, tmp)
+		return
+	} else if sum > target {
+		return
+	}
+
+	for i := start; i < len(candidates); i++ {
+		if sum+candidates[i] <= target {
+			*path = append(*path, candidates[i])
+			backtrack(candidates, target, i, ret, path, sum+candidates[i])
+			*path = (*path)[:len(*path)-1]
+		}
+	}
+}
+
 func main() {
 	/*strs := letterCombinations("23")
 	fmt.Println(strs)
@@ -277,5 +362,7 @@ func main() {
 	//fmt.Println(candidates2([]int{10, 1, 2, 7, 6, 1, 5}, 8))
 	//fmt.Println(digits("234"))
 	//fmt.Println(subHuiWen("aab"))
-	fmt.Println(threeSum([]int{-2, 0, 1, 1, 2}))
+	//fmt.Println(threeSum([]int{-2, 0, 1, 1, 2}))
+	//fmt.Println(exist([][]byte{{'a', 'a'}}, "aaa"))
+	fmt.Println(combinationSum([]int{2, 3, 6, 7}, 7))
 }

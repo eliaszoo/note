@@ -279,6 +279,73 @@ func buildTree(preorder []int, inorder []int) *TreeNode {
 	return root
 }
 
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+var ret int
+
+func depth(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+	l := depth(root.Left)
+	r := depth(root.Right)
+	if l+r > ret {
+		ret = l + r
+	}
+
+	return max(l, r) + 1
+}
+
+func diameterOfBinaryTree(root *TreeNode) int {
+	depth(root)
+	return ret
+}
+
+func isValidBST(root *TreeNode) bool {
+	pre := math.MinInt
+	return isValidBSTFunc(root, &pre)
+}
+
+func isValidBSTFunc(root *TreeNode, pre *int) bool {
+	if root == nil {
+		return true
+	}
+
+	if !isValidBSTFunc(root.Left, pre) {
+		return false
+	}
+
+	if *pre >= root.Val {
+		return false
+	}
+	*pre = root.Val
+	return isValidBSTFunc(root.Right, pre)
+}
+
+func flatten(root *TreeNode) {
+	p := root
+	for p != nil {
+		l := p.Left
+		r := p.Right
+		if l != nil {
+			q := l
+			for ; q.Right != nil; q = q.Right {
+			}
+
+			q.Right = r
+			p.Right = l
+			p.Left = nil
+		}
+
+		p = p.Right
+	}
+}
+
 func main() {
 	root := build([]int{1, 2, 3, 4, 5, 6, 7}, 0)
 	var tmp []int
