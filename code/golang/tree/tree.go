@@ -346,6 +346,85 @@ func flatten(root *TreeNode) {
 	}
 }
 
+func PreOrderIter(root *TreeNode) []int {
+	if root == nil {
+		return nil
+	}
+
+	var ret []int
+	var stack []*TreeNode
+	stack = append(stack, root)
+	for len(stack) > 0 {
+		cur := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		if cur.Right != nil {
+			stack = append(stack, cur.Right)
+		}
+		if cur.Left != nil {
+			stack = append(stack, cur.Left)
+		}
+		ret = append(ret, cur.Val)
+	}
+
+	return ret
+}
+
+func reverseArray(arr []int) {
+	l, r := 0, len(arr)-1
+	for l < r {
+		arr[l], arr[r] = arr[r], arr[l]
+		l++
+		r--
+	}
+}
+
+func PostOrderIter(root *TreeNode) []int {
+	if root == nil {
+		return nil
+	}
+
+	var ret []int
+	var stack []*TreeNode
+	stack = append(stack, root)
+	for len(stack) > 0 {
+		cur := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		if cur.Left != nil {
+			stack = append(stack, cur.Left)
+		}
+		if cur.Right != nil {
+			stack = append(stack, cur.Right)
+		}
+		ret = append(ret, cur.Val)
+	}
+
+	reverseArray(ret)
+	return ret
+}
+
+func InorderIter(root *TreeNode) []int {
+	if root == nil {
+		return nil
+	}
+
+	var ret []int
+	var stack []*TreeNode
+	cur := root
+	for cur != nil || len(stack) > 0 {
+		if cur != nil {
+			stack = append(stack, cur)
+			cur = cur.Left
+		} else {
+			top := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			ret = append(ret, top.Val)
+			cur = top.Right
+		}
+	}
+
+	return ret
+}
+
 func main() {
 	root := build([]int{1, 2, 3, 4, 5, 6, 7}, 0)
 	var tmp []int

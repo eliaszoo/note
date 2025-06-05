@@ -21,3 +21,18 @@ func TestFlatten(t *testing.T) {
 	flatten(root)
 	fmt.Println(traverG2(root))
 }
+
+func TestPreorderIter(t *testing.T) {
+	root := build([]int{1, 2, 3, 4, 5}, 0)
+	fmt.Println(PreOrderIter(root))
+}
+
+func TestPostOrderIter(t *testing.T) {
+	root := build([]int{1, 2, 3, 4, 5}, 0)
+	fmt.Println(PostOrderIter(root))
+}
+
+func TestInorderIter(t *testing.T) {
+	root := build([]int{1, 2, 3, 4, 5}, 0)
+	fmt.Println(InorderIter(root))
+}

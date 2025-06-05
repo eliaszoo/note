@@ -189,3 +189,47 @@ func spiralOrder2(matrix [][]int) []int {
 
 	return ret
 }
+
+func maxSlidingWindow(nums []int, k int) []int {
+	var ret []int
+	if len(nums) < k {
+		return ret
+	}
+
+	queue := make([]int, 0)
+	push := func(val int) {
+		tail := len(queue) - 1
+		for tail >= 0 && val > queue[tail] {
+			queue = queue[:tail]
+			tail--
+		}
+		queue = append(queue, val)
+	}
+
+	for i := 0; i < len(nums); i++ {
+		if i >= k {
+			if len(queue) > 0 && queue[0] == nums[i-k] {
+				queue = queue[1:]
+			}
+		}
+
+		push(nums[i])
+		if i >= k-1 {
+			ret = append(ret, queue[0])
+		}
+	}
+
+	return ret
+}
+
+func getMax(nums []int) int {
+	max := nums[0]
+	index := 0
+	for i := 1; i < len(nums); i++ {
+		if nums[i] > max {
+			max = nums[i]
+			index = i
+		}
+	}
+	return index
+}

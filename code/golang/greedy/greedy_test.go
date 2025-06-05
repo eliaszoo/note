@@ -24,3 +24,7 @@ func TestSpiralOrder(t *testing.T) {
 		{9, 10, 11, 12},
 	}))
 }
+
+func TestMaxSlidingWindow(t *testing.T) {
+	fmt.Println(maxSlidingWindow([]int{1, 3, -1, -3, 3, 3, 6, 7}, 3))
+}
