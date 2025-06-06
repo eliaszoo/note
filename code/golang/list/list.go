@@ -206,10 +206,49 @@ func merge(l1, l2 *ListNode) *ListNode {
 	return dummy.Next
 }
 
+func GetIntersectionNode(headA, headB *ListNode) *ListNode {
+	p, q := headA, headB
+	for p != q {
+		if p == nil {
+			p = headB
+		} else {
+			p = p.Next
+		}
+
+		if q == nil {
+			q = headA
+		} else {
+			q = q.Next
+		}
+	}
+	return p
+}
+
+func isPalindrome(head *ListNode) bool {
+	fast, slow := head, head
+	cnt := 0
+	for fast != nil && fast.Next != nil {
+		fast = fast.Next.Next
+		slow = slow.Next
+		cnt++
+	}
+
+	p := reverse(slow)
+	q := head
+	for i := 0; i < cnt; i++ {
+		if p.Val != q.Val {
+			return false
+		}
+		p = p.Next
+		q = q.Next
+	}
+	return true
+}
+
 func main() {
 	list := NewList([]int{1, 2, 3, 4, 5})
 	PrintList(list)
-	fmt.Println("-----\n")
+	//fmt.Println("-----\n")
 
 	//PrintList(reverseKGroup(list, 2))
 
