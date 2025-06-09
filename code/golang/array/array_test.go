@@ -24,3 +24,11 @@ func TestRotate2(t *testing.T) {
 	Rotate2(m)
 	fmt.Println(m)
 }
+
+func TestFindKthLargest(t *testing.T) {
+	fmt.Println(findKthLargest([]int{3, 2, 1, 5, 6, 4}, 2))
+}
+
+func TestThreeSum(t *testing.T) {
+	fmt.Println(threeSum([]int{2, -3, 0, -2, -5, -5, -4, 1, 2, -2, 2, 0, 2, -4, 5, 5, -10}))
+}

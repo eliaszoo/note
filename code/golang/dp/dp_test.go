@@ -22,3 +22,15 @@ func TestRobTree(t *testing.T) {
 func TestMaxProfit(t *testing.T) {
 	fmt.Println(maxProfit1([]int{7, 1, 5, 3, 6, 4}))
 }
+
+func TestWordBreak(t *testing.T) {
+	fmt.Println(wordBreak("applepenapple", []string{"apple", "pen"}))
+}
+
+func TestCanPartition(t *testing.T) {
+	fmt.Println(canPartition([]int{3, 3, 3, 4, 5}))
+}
+
+func TestGetlongestCommonSubsequencee(t *testing.T) {
+	fmt.Println(longestCommonSubsequence("abcde", "ace"))
+}

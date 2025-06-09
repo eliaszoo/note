@@ -36,3 +36,20 @@ func TestInorderIter(t *testing.T) {
 	root := build([]int{1, 2, 3, 4, 5}, 0)
 	fmt.Println(InorderIter(root))
 }
+
+func TestGetLeftNode(t *testing.T) {
+	root := build([]int{1, 2, 3, 4, 5}, 0)
+	var (
+		maxHeight int
+		ret       *TreeNode
+	)
+	GetLeftNode(root, 1, &maxHeight, &ret)
+	fmt.Println(ret)
+	fmt.Println(maxHeight)
+}
+
+func TestPathSum(t *testing.T) {
+	root := build([]int{10, 5, -3, 3, 2, -1, 11, 3, -2, -1, 1}, 0)
+	fmt.Println(traverG2(root))
+	fmt.Println(pathSum(root, 8))
+}

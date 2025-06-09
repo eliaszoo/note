@@ -350,6 +350,145 @@ func backtrack(candidates []int, target int, start int, ret *[][]int, path *[]in
 	}
 }
 
+func partition(s string) [][]string {
+	var (
+		ret  [][]string
+		path []string
+	)
+	backtrack2(s, 0, &ret, &path)
+	return ret
+}
+
+func isHuiwen(s string) bool {
+	i := 0
+	j := len(s) - 1
+	for i < j {
+		if s[i] != s[j] {
+			return false
+		}
+		i++
+		j--
+	}
+	return true
+}
+
+func backtrack2(s string, begin int, ret *[][]string, path *[]string) {
+	if begin >= len(s) {
+		tmp := make([]string, len(*path))
+		copy(tmp, *path)
+		*ret = append(*ret, tmp)
+		return
+	}
+
+	for i := begin + 1; i <= len(s); i++ {
+		if isHuiwen(s[begin:i]) {
+			*path = append(*path, s[begin:i])
+			backtrack2(s, i, ret, path)
+			*path = (*path)[:len(*path)-1]
+		}
+	}
+}
+
+func solveNQueens(n int) [][]string {
+	var (
+		ret [][]string
+	)
+	path := make([][]byte, n)
+	for i := 0; i < n; i++ {
+		path[i] = make([]byte, n)
+		for j := 0; j < n; j++ {
+			path[i][j] = '.'
+		}
+	}
+	backtrackNQueues(n, 0, &ret, path)
+	return ret
+}
+
+func backtrackNQueues(n, index int, ret *[][]string, path [][]byte) {
+	if index >= n {
+		tmp := make([]string, len(path))
+		for i := 0; i < len(path); i++ {
+			tmp[i] = string(path[i])
+		}
+		*ret = append(*ret, tmp)
+		return
+	}
+
+	for i := 0; i < n; i++ {
+		path[index][i] = 'Q'
+		if isOk(index, i, path) {
+			backtrackNQueues(n, index+1, ret, path)
+		}
+		path[index][i] = '.'
+	}
+}
+
+func isOk(x, y int, a [][]byte) bool {
+	m := len(a)
+	n := m
+	for j := 0; j < n; j++ {
+		if j != y && a[x][j] == 'Q' {
+			return false
+		}
+	}
+
+	for i := 0; i < m; i++ {
+		if i != x && a[i][y] == 'Q' {
+			return false
+		}
+	}
+
+	i, j := x, y
+	for {
+		i++
+		j++
+		if i >= m || j >= n {
+			break
+		}
+		if a[i][j] == 'Q' {
+			return false
+		}
+	}
+
+	i, j = x, y
+	for {
+		i--
+		j--
+		if i < 0 || j < 0 {
+			break
+		}
+		if a[i][j] == 'Q' {
+			return false
+		}
+	}
+
+	i, j = x, y
+	for {
+		i++
+		j--
+		if i >= m || j < 0 {
+			break
+		}
+		if a[i][j] == 'Q' {
+			return false
+		}
+	}
+
+	i, j = x, y
+	for {
+		i--
+		j++
+		if i < 0 || j >= n {
+			break
+		}
+		if a[i][j] == 'Q' {
+			return false
+		}
+	}
+
+	return true
+}
+
 func main() {
 	/*strs := letterCombinations("23")
 	fmt.Println(strs)
@@ -364,5 +503,6 @@ func main() {
 	//fmt.Println(subHuiWen("aab"))
 	//fmt.Println(threeSum([]int{-2, 0, 1, 1, 2}))
 	//fmt.Println(exist([][]byte{{'a', 'a'}}, "aaa"))
-	fmt.Println(combinationSum([]int{2, 3, 6, 7}, 7))
+	//fmt.Println(combinationSum([]int{2, 3, 6, 7}, 7))
+	fmt.Println(partition("aab"))
 }

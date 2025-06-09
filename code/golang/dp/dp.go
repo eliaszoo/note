@@ -208,3 +208,66 @@ func maxProfit1(prices []int) int {
 	fmt.Println(dp)
 	return dp[len(prices)-1][1]
 }
+
+func wordBreak(s string, wordDict []string) bool {
+	dp := make([]int, len(s)+1)
+	dp[0] = 0
+	for i := 1; i <= len(s); i++ {
+		for _, word := range wordDict {
+			if i >= len(word) && s[i-len(word):i] == word {
+				dp[i] = max(dp[i], dp[i-len(word)]+len(word))
+			}
+		}
+		fmt.Println(dp)
+	}
+
+	return dp[len(s)] == len(s)
+}
+
+func canPartition(nums []int) bool {
+	sum := 0
+	for _, num := range nums {
+		sum += num
+	}
+	if sum%2 != 0 {
+		return false
+	}
+
+	n := sum / 2
+	dp := make([]int, n+1)
+	for _, num := range nums {
+		for i := n; i >= num; i-- {
+			dp[i] = max(dp[i-num]+num, dp[i])
+		}
+		fmt.Println(dp)
+	}
+	return dp[n] == n
+}
+
+func longestCommonSubsequence(text1 string, text2 string) int {
+	m, n := len(text1), len(text2)
+	dp := make([][]int, m)
+	for i := 0; i < m; i++ {
+		dp[i] = make([]int, n)
+	}
+
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			if text1[i] == text2[j] {
+				if i < 1 || j < 1 {
+					dp[i][j] = 1
+				} else {
+					dp[i][j] = dp[i-1][j-1] + 1
+				}
+			} else if i >= 1 && j >= 1 {
+				dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+			} else if i >= 1 {
+				dp[i][j] = dp[i-1][j]
+			} else if j >= 1 {
+				dp[i][j] = dp[i][j-1]
+			}
+		}
+	}
+	fmt.Println(dp)
+	return dp[m-1][n-1]
+}

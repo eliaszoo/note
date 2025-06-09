@@ -425,6 +425,51 @@ func InorderIter(root *TreeNode) []int {
 	return ret
 }
 
+func GetLeftNode(root *TreeNode, height int, maxHeight *int, ret **TreeNode) {
+	if root.Left == nil && root.Right == nil {
+		if height > *maxHeight {
+			*maxHeight = height
+			*ret = root
+		}
+		return
+	}
+	if root.Left != nil {
+		GetLeftNode(root.Left, height+1, maxHeight, ret)
+	}
+	if root.Right != nil {
+		GetLeftNode(root.Right, height+1, maxHeight, ret)
+	}
+}
+
+func pathSum(root *TreeNode, targetSum int) int {
+	var count int
+	pathSum1(root, targetSum, &count)
+	return count
+}
+
+func pathSum1(root *TreeNode, targetSum int, count *int) {
+	if root == nil {
+		return
+	}
+	pathSumFunc2(root, targetSum, count)
+	pathSum1(root.Left, targetSum, count)
+	pathSum1(root.Right, targetSum, count)
+	return
+}
+
+func pathSumFunc2(root *TreeNode, targetSum int, count *int) {
+	if root == nil {
+		return
+	}
+
+	if targetSum == root.Val {
+		*count++
+	}
+
+	pathSumFunc2(root.Left, targetSum-root.Val, count)
+	pathSumFunc2(root.Right, targetSum-root.Val, count)
+}
+
 func main() {
 	root := build([]int{1, 2, 3, 4, 5, 6, 7}, 0)
 	var tmp []int
