@@ -477,21 +477,20 @@ func MaxPathSum(root *TreeNode) int {
 	return ret
 }
 
-func maxPathSumFunc(root *TreeNode, ret *int) (int, int) {
+func maxPathSumFunc(root *TreeNode, ret *int) int {
 	if root == nil {
-		return 0, 0
+		return 0
 	}
 
-	_, lg := maxPathSumFunc(root.Left, ret)
-	_, rg := maxPathSumFunc(root.Right, ret)
+	lg := max(maxPathSumFunc(root.Left, ret), 0)
+	rg := max(maxPathSumFunc(root.Right, ret), 0)
 
 	val := lg + rg + root.Val
 	if val > *ret {
 		*ret = val
 	}
 
-	g := root.Val + max(lg, rg)
-	return val, g
+	return root.Val + max(lg, rg)
 }
 
 func main() {
