@@ -271,3 +271,38 @@ func longestCommonSubsequence(text1 string, text2 string) int {
 	fmt.Println(dp)
 	return dp[m-1][n-1]
 }
+
+func longestValidParentheses(s string) int {
+	if len(s) == 0 {
+		return 0
+	}
+
+	var max int
+	dp := make([]int, len(s))
+	for i, c := range s {
+		if c == ')' {
+			if i > 0 {
+				if s[i-1] == '(' {
+					if i > 1 {
+						dp[i] = dp[i-2] + 2
+					} else {
+						dp[i] = 2
+					}
+				} else if dp[i-1] > 0 {
+					idx := i - 1 - dp[i-1]
+					if idx >= 0 && s[idx] == '(' {
+						dp[i] = dp[i-1] + 2
+						if i-dp[i] >= 0 {
+							dp[i] += dp[i-dp[i]]
+						}
+					}
+				}
+				if dp[i] > max {
+					max = dp[i]
+				}
+			}
+		}
+	}
+
+	return max
+}

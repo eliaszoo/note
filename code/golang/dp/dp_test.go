@@ -34,3 +34,14 @@ func TestCanPartition(t *testing.T) {
 func TestGetlongestCommonSubsequencee(t *testing.T) {
 	fmt.Println(longestCommonSubsequence("abcde", "ace"))
 }
+
+func TestLongestValidParentheses(t *testing.T) {
+	fmt.Println(longestValidParentheses(")()()(())("))
+
+	fmt.Println(longestValidParentheses("(()"))    // 2
+	fmt.Println(longestValidParentheses(")()())")) // 4
+	fmt.Println(longestValidParentheses(""))       // 0
+	fmt.Println(longestValidParentheses("()(()"))  // 2
+	fmt.Println(longestValidParentheses("()(())")) // 6
+
+}
