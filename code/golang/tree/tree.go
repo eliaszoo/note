@@ -470,6 +470,30 @@ func pathSumFunc2(root *TreeNode, targetSum int, count *int) {
 	pathSumFunc2(root.Right, targetSum-root.Val, count)
 }
 
+// 最大路径和
+func MaxPathSum(root *TreeNode) int {
+	var ret int
+	maxPathSumFunc(root, &ret)
+	return ret
+}
+
+func maxPathSumFunc(root *TreeNode, ret *int) (int, int) {
+	if root == nil {
+		return 0, 0
+	}
+
+	_, lg := maxPathSumFunc(root.Left, ret)
+	_, rg := maxPathSumFunc(root.Right, ret)
+
+	val := lg + rg + root.Val
+	if val > *ret {
+		*ret = val
+	}
+
+	g := root.Val + max(lg, rg)
+	return val, g
+}
+
 func main() {
 	root := build([]int{1, 2, 3, 4, 5, 6, 7}, 0)
 	var tmp []int

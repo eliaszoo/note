@@ -53,3 +53,8 @@ func TestPathSum(t *testing.T) {
 	fmt.Println(traverG2(root))
 	fmt.Println(pathSum(root, 8))
 }
+
+func TestMaxPathSum(t *testing.T) {
+	root := build([]int{-10, 10, 9, -1, -1, 10, 5}, 0)
+	fmt.Println(MaxPathSum(root))
+}
