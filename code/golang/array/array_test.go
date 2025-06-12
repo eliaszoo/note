@@ -32,3 +32,15 @@ func TestFindKthLargest(t *testing.T) {
 func TestThreeSum(t *testing.T) {
 	fmt.Println(threeSum([]int{2, -3, 0, -2, -5, -5, -4, 1, 2, -2, 2, 0, 2, -4, 5, 5, -10}))
 }
+
+func TestRainArea(t *testing.T) {
+	fmt.Println(rainArea([]int{4, 2, 2, 1, 3}))
+}
+
+func TestIsValid(t *testing.T) {
+	fmt.Println(isValid("()"))
+}
+
+func TestSearch(t *testing.T) {
+	fmt.Println(search([]int{3, 1}, 1))
+}

@@ -106,3 +106,102 @@ func threeSum(nums []int) [][]int {
 	}
 	return ret
 }
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func rainArea(arr []int) int {
+	stack := make([]int, 0)
+	var area int
+	for i, num := range arr {
+		n := len(stack)
+		if n == 0 {
+			stack = append(stack, i)
+		} else {
+			top := stack[n-1]
+			topVal := arr[top]
+
+			for num > topVal && len(stack) > 0 {
+				stack = stack[:n-1]
+				n--
+
+				if len(stack) == 0 {
+					break
+				}
+
+				top := stack[n-1]
+				h := min(num, arr[top]) - topVal
+				w := i - top - 1
+				area += h * w
+
+				topVal = arr[top]
+			}
+
+			stack = append(stack, i)
+		}
+	}
+
+	return area
+}
+
+func isValid(s string) bool {
+	stack := make([]byte, 0)
+	for _, c := range s {
+		if c == '(' || c == '[' || c == '{' {
+			stack = append(stack, byte(c))
+		} else {
+			if len(stack) == 0 {
+				return false
+			}
+
+			top := stack[len(stack)-1]
+			if c == ')' && top == '(' {
+				stack = stack[:len(stack)-1]
+			} else if c == ']' && top == '[' {
+				stack = stack[:len(stack)-1]
+			} else if c == '}' && top == '{' {
+				stack = stack[:len(stack)-1]
+			} else {
+				return false
+			}
+		}
+	}
+
+	return len(stack) == 0
+}
+
+func search(nums []int, target int) int {
+	l, r := 0, len(nums)-1
+	for l <= r {
+		mid := l + (r-l)/2
+		if nums[mid] == target {
+			return mid
+		} else if nums[mid] > target {
+			if nums[mid] > nums[l] {
+				if target >= nums[l] {
+					r = mid - 1
+				} else {
+					l = mid + 1
+				}
+			} else {
+				r = mid - 1
+			}
+		} else {
+			if nums[mid] < nums[r] {
+				if target <= nums[r] {
+					l = mid + 1
+				} else {
+					r = mid - 1
+				}
+			} else {
+				l = mid + 1
+			}
+		}
+	}
+
+	return -1
+}
