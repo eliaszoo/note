@@ -23,3 +23,7 @@ func TestOrangesRotting(t *testing.T) {
 		{2, 0},
 	}))
 }
+
+func TestCanFinish(t *testing.T) {
+	fmt.Println(canFinish(5, [][]int{{1, 4}, {2, 4}, {3, 1}, {3, 2}}))
+}

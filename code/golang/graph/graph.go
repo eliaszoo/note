@@ -1,5 +1,7 @@
 package graph
 
+import "fmt"
+
 func numIslands(grid [][]byte) int {
 	visit := make([][]bool, len(grid))
 	for i := 0; i < len(visit); i++ {
@@ -95,4 +97,48 @@ func bfsOrangesRotting(grid [][]int) int {
 		return -1
 	}
 	return times - 1
+}
+
+func canFinish(numCourses int, prerequisites [][]int) bool {
+	g := make([][]int, numCourses)
+	for i := 0; i < numCourses; i++ {
+		g[i] = make([]int, 0, numCourses)
+	}
+
+	for _, p := range prerequisites {
+		g[p[0]] = append(g[p[0]], p[1])
+	}
+
+	visit := make([]int, numCourses)
+
+	for i := 0; i < numCourses; i++ {
+		if len(g[i]) > 0 {
+			if !dfsCanFinish(g, i, visit) {
+				return false
+			}
+		}
+	}
+
+	return true
+}
+
+func dfsCanFinish(g [][]int, i int, visit []int) bool {
+	if visit[i] == 1 {
+		return false
+	}
+	if visit[i] == -1 {
+		return true
+	}
+
+	visit[i] = 1
+	for _, idx := range g[i] {
+		if !dfsCanFinish(g, idx, visit) {
+			return false
+		}
+	}
+
+	// dfs结束，说明i节点没有环，可以完成课程
+	visit[i] = -1
+	fmt.Println(visit)
+	return true
 }
