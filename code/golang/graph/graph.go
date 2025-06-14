@@ -142,3 +142,46 @@ func dfsCanFinish(g [][]int, i int, visit []int) bool {
 	fmt.Println(visit)
 	return true
 }
+
+type Trie struct {
+	Exist bool
+	Next  [26]*Trie
+}
+
+func Constructor() Trie {
+	return Trie{}
+}
+
+func (this *Trie) Insert(word string) {
+	p := this
+	for _, c := range word {
+		if p.Next[c-'a'] == nil {
+			p.Next[c-'a'] = &Trie{}
+		}
+
+		p = p.Next[c-'a']
+	}
+	p.Exist = true
+}
+
+func (this *Trie) Search(word string) bool {
+	p := this
+	for _, c := range word {
+		if p.Next[c-'a'] == nil {
+			return false
+		}
+		p = p.Next[c-'a']
+	}
+	return p.Exist
+}
+
+func (this *Trie) StartsWith(prefix string) bool {
+	p := this
+	for _, c := range prefix {
+		if p.Next[c-'a'] == nil {
+			return false
+		}
+		p = p.Next[c-'a']
+	}
+	return true
+}

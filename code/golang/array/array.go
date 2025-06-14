@@ -205,3 +205,149 @@ func search(nums []int, target int) int {
 
 	return -1
 }
+
+func heapInsertMax(heap []int, num int) []int {
+	h := make([]int, 0, len(heap)+1)
+	h = append(h, num)
+	h = append(h, heap...)
+
+	for i := 0; i < len(h)/2; i++ {
+		l := 2*i + 1
+		r := 2*i + 2
+		if l < len(h) && h[i] < h[l] {
+			h[i], h[l] = h[l], h[i]
+		}
+		if r < len(h) && h[i] < h[r] {
+			h[i], h[r] = h[r], h[i]
+		}
+	}
+
+	return h
+}
+
+func heapPopMax(h []int) []int {
+	h[0] = h[len(h)-1]
+	h = h[:len(h)-1]
+
+	for i := 0; i < len(h)/2; i++ {
+		l := 2*i + 1
+		r := 2*i + 2
+		if l < len(h) && h[i] < h[l] {
+			h[i], h[l] = h[l], h[i]
+		}
+		if r < len(h) && h[i] < h[r] {
+			h[i], h[r] = h[r], h[i]
+		}
+	}
+	return h
+}
+
+func heapInsertMin(heap []int, num int) []int {
+	h := make([]int, 0, len(heap)+1)
+	h = append(h, num)
+	h = append(h, heap...)
+
+	for i := 0; i < len(h)/2; i++ {
+		l := 2*i + 1
+		r := 2*i + 2
+		if l < len(h) && h[i] > h[l] {
+			h[i], h[l] = h[l], h[i]
+		}
+		if r < len(h) && h[i] > h[r] {
+			h[i], h[r] = h[r], h[i]
+		}
+	}
+
+	return h
+}
+
+func heapPopMin(h []int) []int {
+	h[0] = h[len(h)-1]
+	h = h[:len(h)-1]
+
+	for i := 0; i < len(h)/2; i++ {
+		l := 2*i + 1
+		r := 2*i + 2
+		if l < len(h) && h[i] > h[l] {
+			h[i], h[l] = h[l], h[i]
+		}
+		if r < len(h) && h[i] > h[r] {
+			h[i], h[r] = h[r], h[i]
+		}
+	}
+	return h
+}
+
+type MedianFinder struct {
+	maxHeap []int
+	minHeap []int
+}
+
+func Constructor() MedianFinder {
+	return MedianFinder{
+		maxHeap: make([]int, 0),
+		minHeap: make([]int, 0),
+	}
+}
+
+func (this *MedianFinder) AddNum(num int) {
+	if len(this.maxHeap) != len(this.minHeap) {
+		if len(this.minHeap) > 0 && num > this.minHeap[0] {
+			this.minHeap = heapInsertMin(this.minHeap, num)
+		} else {
+			this.maxHeap = heapInsertMax(this.maxHeap, num)
+			top := this.maxHeap[0]
+			this.maxHeap = heapPopMax(this.maxHeap)
+			this.minHeap = heapInsertMin(this.minHeap, top)
+		}
+	} else {
+		if len(this.minHeap) > 0 && num < this.minHeap[0] {
+			this.maxHeap = heapInsertMax(this.maxHeap, num)
+		} else {
+			this.minHeap = heapInsertMin(this.minHeap, num)
+			top := this.minHeap[0]
+			this.minHeap = heapPopMin(this.minHeap)
+			this.maxHeap = heapInsertMax(this.maxHeap, top)
+		}
+	}
+}
+
+func (this *MedianFinder) FindMedian() float64 {
+	if (len(this.maxHeap)+len(this.minHeap))%2 == 1 {
+		return float64(this.maxHeap[0])
+	} else {
+		return float64(this.maxHeap[0]+this.minHeap[0]) / 2
+	}
+}
+
+func findDuplicate(nums []int) int {
+	slow, fast := nums[0], nums[0]
+	for {
+		slow = nums[slow]
+		fast = nums[nums[fast]]
+		if slow == fast {
+			break
+		}
+	}
+	slow = nums[0]
+	for slow != fast {
+		slow = nums[slow]
+		fast = nums[fast]
+	}
+	return slow
+}
+
+func findDuplicate2(nums []int) int {
+	slow, fast := nums[0], nums[nums[0]]
+	for slow != fast {
+		slow = nums[slow]
+		fast = nums[nums[fast]]
+	}
+
+	p := 0
+	for p != slow {
+		p = nums[p]
+		slow = nums[slow]
+	}
+	return p
+}

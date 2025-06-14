@@ -44,3 +44,16 @@ func TestIsValid(t *testing.T) {
 func TestSearch(t *testing.T) {
 	fmt.Println(search([]int{3, 1}, 1))
 }
+
+func TestMedian(t *testing.T) {
+	m := Constructor()
+	m.AddNum(1)
+	m.AddNum(2)
+	fmt.Println(m.FindMedian())
+	m.AddNum(3)
+	fmt.Println(m.FindMedian())
+}
+
+func TestFindDuplicate(t *testing.T) {
+	fmt.Println(findDuplicate2([]int{3, 1, 3, 4, 2}))
+}
