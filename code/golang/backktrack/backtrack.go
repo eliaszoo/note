@@ -489,6 +489,55 @@ func isOk(x, y int, a [][]byte) bool {
 	return true
 }
 
+func isValidSudoku(board [][]byte) bool {
+	return backtrackSudo(board, 0)
+}
+
+func isValid(board [][]byte, x, y int) bool {
+	for j := 0; j < len(board[x]); j++ {
+		if j != y && board[x][j] == board[x][y] {
+			return false
+		}
+	}
+	for i := 0; i < len(board); i++ {
+		if i != x && board[i][y] == board[x][y] {
+			return false
+		}
+	}
+
+	startI := (x / 3) * 3
+	startJ := (y / 3) * 3
+	for i := startI; i < startI+3; i++ {
+		for j := startJ; j < startJ+3; j++ {
+			if i != x && j != y {
+				if board[i][j] == board[x][y] {
+					return false
+				}
+			}
+		}
+	}
+
+	return true
+}
+
+func backtrackSudo(board [][]byte, i int) bool {
+	if i >= len(board) {
+		return true
+	}
+
+	for j := 0; j < len(board[i]); j++ {
+		if board[i][j] == '.' {
+			continue
+		}
+
+		if !isValid(board, i, j) {
+			return false
+		}
+	}
+
+	return backtrackSudo(board, i+1)
+}
+
 func main() {
 	/*strs := letterCombinations("23")
 	fmt.Println(strs)
@@ -504,5 +553,16 @@ func main() {
 	//fmt.Println(threeSum([]int{-2, 0, 1, 1, 2}))
 	//fmt.Println(exist([][]byte{{'a', 'a'}}, "aaa"))
 	//fmt.Println(combinationSum([]int{2, 3, 6, 7}, 7))
-	fmt.Println(partition("aab"))
+	//fmt.Println(partition("aab"))
+	fmt.Println(isValidSudoku([][]byte{
+		{'5', '3', '.', '.', '7', '.', '.', '.', '.'},
+		{'6', '.', '.', '1', '9', '5', '.', '.', '.'},
+		{'.', '9', '8', '.', '.', '.', '.', '6', '.'},
+		{'8', '.', '.', '.', '6', '.', '.', '.', '3'},
+		{'4', '.', '.', '8', '.', '3', '.', '.', '1'},
+		{'7', '.', '.', '.', '2', '.', '.', '.', '6'},
+		{'.', '6', '.', '.', '.', '.', '2', '8', '.'},
+		{'.', '.', '.', '4', '1', '9', '.', '.', '5'},
+		{'.', '.', '.', '.', '8', '.', '.', '7', '9'},
+	}))
 }

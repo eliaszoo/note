@@ -1,6 +1,9 @@
 package stack
 
-import "strconv"
+import (
+	"fmt"
+	"strconv"
+)
 
 func decodeString(s string) string {
 	numStack := []int{}
@@ -27,4 +30,39 @@ func decodeString(s string) string {
 
 	}
 	return ret
+}
+
+func evalRPN(tokens []string) int {
+	stack := make([]string, 0, 4)
+	popNumber := func() int {
+		no := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		num, _ := strconv.Atoi(no)
+		fmt.Println(no)
+		return num
+	}
+
+	for _, s := range tokens {
+		switch s {
+		case "+":
+			val := popNumber() + popNumber()
+			stack = append(stack, strconv.Itoa(val))
+		case "-":
+			a := popNumber()
+			b := popNumber()
+			val := b - a
+			stack = append(stack, strconv.Itoa(val))
+		case "*":
+			val := popNumber() * popNumber()
+			stack = append(stack, strconv.Itoa(val))
+		case "/":
+			a := popNumber()
+			b := popNumber()
+			stack = append(stack, strconv.Itoa(b/a))
+		default:
+			stack = append(stack, s)
+		}
+	}
+
+	return popNumber()
 }

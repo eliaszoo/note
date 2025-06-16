@@ -57,3 +57,11 @@ func TestMedian(t *testing.T) {
 func TestFindDuplicate(t *testing.T) {
 	fmt.Println(findDuplicate2([]int{3, 1, 3, 4, 2}))
 }
+
+func TestCanCompleteCircuit(t *testing.T) {
+	fmt.Println(canCompleteCircuit([]int{1, 2, 3, 4, 3, 2, 4, 1, 5, 3, 2, 4}, []int{1, 1, 1, 3, 2, 4, 3, 6, 7, 4, 3, 1}))
+}
+
+func TestCandy(t *testing.T) {
+	fmt.Println(candy([]int{1, 2, 87, 87, 87, 2, 1}))
+}

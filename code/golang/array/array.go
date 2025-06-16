@@ -1,6 +1,9 @@
 package array
 
-import "sort"
+import (
+	"fmt"
+	"sort"
+)
 
 func Rotate(matrix [][]int) {
 	m := len(matrix)
@@ -350,4 +353,67 @@ func findDuplicate2(nums []int) int {
 		slow = nums[slow]
 	}
 	return p
+}
+
+func canCompleteCircuit(gas []int, cost []int) int {
+	add := make([]int, len(gas))
+	for i := 0; i < len(gas); i++ {
+		add[i] = gas[i] - cost[i]
+	}
+
+	fmt.Println(add)
+	var (
+		val   int
+		begin int
+	)
+	for i := 0; i < len(add)*2; i++ {
+		idx := i % len(add)
+		if i != 0 && idx == begin {
+			if val < 0 {
+				return -1
+			}
+			break
+		}
+
+		if val < 0 && i < len(add) {
+			val = 0
+			begin = idx
+		}
+		val += add[idx]
+	}
+	return begin
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func candy(ratings []int) int {
+	candidate := make([]int, len(ratings))
+	for i := 0; i < len(candidate); i++ {
+		candidate[i] = 1
+	}
+
+	for i := 1; i < len(ratings); i++ {
+		if ratings[i] > ratings[i-1] {
+			candidate[i] = candidate[i-1] + 1
+		}
+	}
+
+	fmt.Println(candidate)
+	for i := len(ratings) - 2; i >= 0; i-- {
+		if ratings[i] > ratings[i+1] {
+			candidate[i] = max(candidate[i], candidate[i+1]+1)
+		}
+	}
+
+	fmt.Println(candidate)
+	total := 0
+	for i := 0; i < len(candidate); i++ {
+		total += candidate[i]
+	}
+	return total
 }
