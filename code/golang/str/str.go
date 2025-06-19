@@ -56,3 +56,51 @@ func isOk(m map[byte]int) bool {
 	}
 	return true
 }
+
+func getNext(s string) []int {
+	next := make([]int, len(s))
+	next[0] = 0
+	for i := 1; i < len(s); i++ {
+		k := next[i-1]
+		for k > 0 && s[i] != s[k] {
+			k = next[k-1]
+		}
+
+		if s[i] == s[k] {
+			next[i] = k + 1
+		} else {
+			next[i] = 0
+		}
+	}
+
+	return next
+}
+
+func kmp(s, m string) bool {
+	if len(m) == 0 {
+		return true
+	}
+	if len(s) < len(m) {
+		return false
+	}
+
+	var i, j = 0, 0
+	next := getNext(m)
+	for i < len(s) {
+		if s[i] == m[j] {
+			i++
+			j++
+
+			if j == len(m) {
+				return true
+			}
+		} else {
+			if j > 0 {
+				j = next[j-1]
+			} else {
+				i++
+			}
+		}
+	}
+	return false
+}
