@@ -63,7 +63,7 @@ func getNext(s string) []int {
 	for i := 1; i < len(s); i++ {
 		k := next[i-1]
 		for k > 0 && s[i] != s[k] {
-			k = next[k-1]
+			k = next[k-1] // ???
 		}
 
 		if s[i] == s[k] {

@@ -306,3 +306,79 @@ func longestValidParentheses(s string) int {
 
 	return max
 }
+
+func isInterleave(s1 string, s2 string, s3 string) bool {
+	if len(s1)+len(s2) != len(s3) {
+		return false
+	}
+
+	dp := make([][]bool, len(s1)+1)
+	for i := 0; i <= len(s1); i++ {
+		dp[i] = make([]bool, len(s2)+1)
+	}
+	dp[0][0] = true
+
+	for n := 1; n <= len(s3); n++ {
+		i := n - len(s2)
+		if i <= 0 {
+			i = 1
+		}
+		for ; i <= len(s1) && i <= n; i++ {
+			if s3[n-1] == s1[i-1] {
+				j := n - i
+				if dp[i-1][j] {
+					dp[i][j] = true
+				}
+			}
+		}
+
+		j := n - len(s1)
+		if j <= 0 {
+			j = 1
+		}
+		for ; j <= len(s2) && j <= n; j++ {
+			if s3[n-1] == s2[j-1] {
+				i := n - j
+				if dp[i][j-1] {
+					dp[i][j] = true
+				}
+			}
+		}
+	}
+
+	fmt.Println(dp)
+	return dp[len(s1)][len(s2)]
+}
+
+// 正确写法
+func isInterleave2(s1 string, s2 string, s3 string) bool {
+	l1, l2, l3 := len(s1), len(s2), len(s3)
+	if l1+l2 != l3 {
+		return false
+	}
+
+	dp := make([][]bool, l1+1)
+	for i := 0; i <= l1; i++ {
+		dp[i] = make([]bool, l2+1)
+	}
+	dp[0][0] = true
+	for i := 1; i <= l1; i++ {
+		dp[i][0] = dp[i-1][0] && s1[i-1] == s3[i-1]
+	}
+	for j := 1; j <= l2; j++ {
+		dp[0][j] = dp[0][j-1] && s2[j-1] == s3[j-1]
+	}
+
+	for i := 1; i <= l1; i++ {
+		for j := 1; j <= l2; j++ {
+			if s1[i-1] == s3[i+j-1] {
+				dp[i][j] = dp[i-1][j]
+			}
+			if s2[j-1] == s3[i+j-1] && !dp[i][j] {
+				dp[i][j] = dp[i][j-1]
+			}
+		}
+	}
+
+	return dp[l1][l2]
+}

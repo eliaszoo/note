@@ -45,3 +45,7 @@ func TestLongestValidParentheses(t *testing.T) {
 	fmt.Println(longestValidParentheses("()(())")) // 6
 
 }
+
+func TestIsInterleave(t *testing.T) {
+	fmt.Println(isInterleave("ab", "bc", "babc"))
+}
