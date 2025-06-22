@@ -49,3 +49,11 @@ func TestLongestValidParentheses(t *testing.T) {
 func TestIsInterleave(t *testing.T) {
 	fmt.Println(isInterleave("ab", "bc", "babc"))
 }
+
+func TestMaxProfit3(t *testing.T) {
+	fmt.Println(maxProfit3([]int{2, 1, 4, 5, 2, 9, 7}))
+}
+
+func TestMaximalSquare(t *testing.T) {
+	fmt.Println(maximalSquare([][]byte{{'0', '0', '0', '1'}, {'1', '1', '0', '1'}, {'1', '1', '1', '1'}, {'0', '1', '1', '1'}, {'0', '1', '1', '1'}}))
+}

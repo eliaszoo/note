@@ -66,3 +66,84 @@ func evalRPN(tokens []string) int {
 
 	return popNumber()
 }
+
+func calculate(s string) int {
+	stack := make([]string, 0, len(s))
+	i := 0
+	var num string
+	var op string
+	for ; i < len(s); i++ {
+		if s[i] == '(' {
+			l := 1
+			for j := i + 1; j < len(s); j++ {
+				if s[j] == '(' {
+					l++
+				} else if s[j] == ')' {
+					l--
+					if l == 0 {
+						val := calculate(s[i+1 : j])
+						stack = append(stack, strconv.Itoa(val))
+						if len(stack) == 3 {
+							val := calc(stack)
+							stack = stack[:0]
+							stack = append(stack, strconv.Itoa(val))
+						}
+
+						i = j
+						break
+					}
+				}
+			}
+		} else if s[i] == ' ' {
+			continue
+		} else if s[i] == '+' || s[i] == '-' {
+			if num != "" {
+				stack = append(stack, num)
+				num = ""
+			}
+			if len(stack) == 3 || (len(stack) == 2 && op == "-") {
+				val := calc(stack)
+				stack = stack[:0]
+				stack = append(stack, strconv.Itoa(val))
+			}
+
+			op = string(s[i])
+			stack = append(stack, string(s[i]))
+		} else {
+			num += string(s[i])
+		}
+	}
+	if num != "" {
+		stack = append(stack, num)
+	}
+
+	return calc(stack)
+}
+
+func calc(stack []string) int {
+	if len(stack) == 1 {
+		v1, _ := strconv.Atoi(stack[0])
+		return v1
+	} else if len(stack) == 3 {
+		v1, _ := strconv.Atoi(stack[0])
+		v2, _ := strconv.Atoi(stack[2])
+		op := stack[1]
+		stack = stack[:0]
+		if op == "+" {
+			return v1 + v2
+		} else {
+			return v1 - v2
+		}
+
+	} else {
+		op := stack[0]
+		v1, _ := strconv.Atoi(stack[1])
+		if op == "-" {
+			return -v1
+		} else {
+			return v1
+		}
+	}
+
+	return -1
+}

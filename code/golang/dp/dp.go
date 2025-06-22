@@ -382,3 +382,84 @@ func isInterleave2(s1 string, s2 string, s3 string) bool {
 
 	return dp[l1][l2]
 }
+
+func maxProfit3(prices []int) int {
+	if len(prices) == 0 {
+		return 0
+	}
+	dp := make([][4]int, len(prices))
+	dp[0][0] = -prices[0]
+	dp[0][2] = -prices[0]
+	for i := 1; i < len(prices); i++ {
+		dp[i][0] = max(-prices[i], dp[i-1][0])
+		dp[i][1] = max(dp[i-1][1], prices[i]+dp[i-1][0])
+		dp[i][2] = max(dp[i-1][2], dp[i-1][1]-prices[i])
+		dp[i][3] = max(dp[i-1][3], dp[i-1][2]+prices[i])
+	}
+	fmt.Println(dp)
+	return dp[len(prices)-1][3]
+}
+
+func maximalSquare(matrix [][]byte) int {
+	m, n := len(matrix), len(matrix[0])
+	dp := make([][]int, m)
+	for i := 0; i < m; i++ {
+		dp[i] = make([]int, n)
+	}
+
+	var max int
+	for i := 0; i < m; i++ {
+		if matrix[i][0] == '1' {
+			dp[i][0] = 1
+			max = 1
+		}
+	}
+	for j := 0; j < n; j++ {
+		if matrix[0][j] == '1' {
+			dp[0][j] = 1
+			max = 1
+		}
+	}
+
+	for i := 1; i < m; i++ {
+		for j := 1; j < n; j++ {
+			if matrix[i][j] == '0' {
+				continue
+			}
+
+			edge := dp[i-1][j-1]
+			if edge == 0 {
+				dp[i][j] = 1
+			} else {
+
+				ok := true
+				for x := i - 1; x >= i-edge; x-- {
+					if matrix[x][j] == '0' {
+						ok = false
+						break
+					}
+				}
+				if ok {
+					for y := j - 1; y >= j-edge; y-- {
+						if matrix[i][y] == '0' {
+							ok = false
+							break
+						}
+					}
+				}
+				if ok {
+					dp[i][j] = edge + 1
+				} else {
+					dp[i][j] = 1
+				}
+			}
+
+			if dp[i][j] > max {
+				max = dp[i][j]
+			}
+		}
+	}
+
+	fmt.Println(dp)
+	return max * max
+}
