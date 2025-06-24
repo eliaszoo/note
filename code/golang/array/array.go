@@ -417,3 +417,58 @@ func candy(ratings []int) int {
 	}
 	return total
 }
+
+func merge(a, b []int) {
+	a[0] = min(a[0], b[0])
+	a[1] = max(a[1], b[1])
+}
+
+func insert(intervals [][]int, newInterval []int) [][]int {
+	if len(intervals) == 0 {
+		intervals = append(intervals, newInterval)
+		return intervals
+	}
+
+	if newInterval[0] < intervals[0][0] && newInterval[1] < intervals[0][0] {
+		new := make([][]int, 0, len(intervals)+1)
+		new = append(new, newInterval)
+		new = append(new, intervals...)
+		return new
+	}
+	if newInterval[0] > intervals[len(intervals)-1][1] {
+		intervals = append(intervals, newInterval)
+		return intervals
+	}
+
+	idx := 0
+	needMerge := true
+	for i := 0; i < len(intervals); i++ {
+		if i > 0 && newInterval[0] > intervals[i-1][1] && newInterval[1] < intervals[i][0] {
+			idx = i
+			needMerge = false
+			break
+		} else if newInterval[0] <= intervals[i][1] {
+			idx = i
+			break
+		}
+	}
+	if !needMerge {
+		intervals = append(intervals, []int{0, 0})
+		copy(intervals[idx+1:], intervals[idx:])
+		intervals[idx] = newInterval
+		return intervals
+	}
+
+	w := idx
+	merge(intervals[w], newInterval)
+	for i := idx; i < len(intervals)-1; i++ {
+		if intervals[i+1][0] <= intervals[w][1] {
+			merge(intervals[w], intervals[i+1])
+		} else {
+			w++
+
+			intervals[w] = intervals[i+1]
+		}
+	}
+	return intervals[:w+1]
+}
