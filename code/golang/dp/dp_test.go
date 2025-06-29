@@ -57,3 +57,7 @@ func TestMaxProfit3(t *testing.T) {
 func TestMaximalSquare(t *testing.T) {
 	fmt.Println(maximalSquare([][]byte{{'0', '0', '0', '1'}, {'1', '1', '0', '1'}, {'1', '1', '1', '1'}, {'0', '1', '1', '1'}, {'0', '1', '1', '1'}}))
 }
+
+func TestIsSubsequenc(t *testing.T) {
+	fmt.Println(isSubsequence("abc", "ahbgdc"))
+}

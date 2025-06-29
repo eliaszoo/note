@@ -50,3 +50,7 @@ func TestKMP(t *testing.T) {
 		}
 	}
 }
+
+func TestConvert(t *testing.T) {
+	fmt.Println(convert("PAYPALISHIRING", 3))
+}

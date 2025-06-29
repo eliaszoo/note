@@ -463,3 +463,56 @@ func maximalSquare(matrix [][]byte) int {
 	fmt.Println(dp)
 	return max * max
 }
+
+// https://leetcode.cn/problems/is-subsequence/?envType=study-plan-v2&envId=top-interview-150
+// 判断子序列
+func isSubsequence(s string, t string) bool {
+	if len(s) == 0 {
+		return true
+	} else if len(t) == 0 {
+		return false
+	}
+
+	m, n := len(s), len(t)
+	dp := make([][]int, m)
+	for i := 0; i < m; i++ {
+		dp[i] = make([]int, n)
+	}
+
+	var ret int
+	for i := 0; i < m; i++ {
+		if s[i] == t[0] {
+			dp[i][0] = 1
+		} else if i > 0 {
+			dp[i][0] = dp[i-1][0]
+		}
+		if dp[i][0] > ret {
+			ret = dp[i][0]
+		}
+	}
+	for j := 0; j < n; j++ {
+		if s[0] == t[j] {
+			dp[0][j] = 1
+		} else if j > 0 {
+			dp[0][j] = dp[0][j-1]
+		}
+
+		if dp[0][j] > ret {
+			ret = dp[0][j]
+		}
+	}
+
+	for i := 1; i < m; i++ {
+		for j := 1; j < n; j++ {
+			if s[i] == t[j] {
+				dp[i][j] = max(dp[i][j], dp[i-1][j-1]+1)
+			} else {
+				dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+			}
+			if dp[i][j] > ret {
+				ret = dp[i][j]
+			}
+		}
+	}
+	return ret == m
+}
