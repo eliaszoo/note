@@ -61,3 +61,7 @@ func TestMaximalSquare(t *testing.T) {
 func TestIsSubsequenc(t *testing.T) {
 	fmt.Println(isSubsequence("abc", "ahbgdc"))
 }
+
+func TestLongestPalindrome(t *testing.T) {
+	fmt.Println(longestPalindrome("cbdd"))
+}
