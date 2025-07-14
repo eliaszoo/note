@@ -472,3 +472,39 @@ func insert(intervals [][]int, newInterval []int) [][]int {
 	}
 	return intervals[:w+1]
 }
+
+func maxOperations(nums []int, k int) int {
+	m := make(map[int]int)
+	for _, num := range nums {
+		_, ok := m[num]
+		if ok {
+			m[num]++
+		} else {
+			m[num] = 1
+		}
+	}
+
+	var ret int
+	for _, num := range nums {
+		n, _ := m[num]
+		if n <= 0 {
+			continue
+		}
+
+		target := k - num
+		cnt, ok := m[target]
+		if ok && cnt > 0 {
+			if num == target {
+				if cnt >= 2 {
+					ret++
+					m[num] -= 2
+				}
+			} else {
+				ret++
+				m[num]--
+				m[target]--
+			}
+		}
+	}
+	return ret
+}

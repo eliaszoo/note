@@ -147,3 +147,36 @@ func calc(stack []string) int {
 
 	return -1
 }
+
+func decodeString2(s string) string {
+	var stack []string
+	var curNum, curStr string
+	//var ret string
+	for i := 0; i < len(s); i++ {
+		if s[i] >= '0' && s[i] <= '9' {
+			curNum += string(s[i])
+		} else if s[i] >= 'a' && s[i] <= 'z' {
+			curStr += string(s[i])
+		} else {
+			if s[i] == '[' {
+				stack = append(stack, curNum)
+				stack = append(stack, curStr)
+				curNum = ""
+				curStr = ""
+			} else {
+				n := len(stack)
+				lastStr := stack[n-1]
+				numStr := stack[n-2]
+				stack = stack[:n-2]
+
+				tmp := curStr
+				num, _ := strconv.Atoi(numStr)
+				for j := 0; j < num-1; j++ {
+					curStr += tmp
+				}
+				curStr = lastStr + curStr
+			}
+		}
+	}
+	return curStr
+}

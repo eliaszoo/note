@@ -71,3 +71,7 @@ func TestInsert(t *testing.T) {
 	//fmt.Println(insert([][]int{{0, 2}, {3, 9}}, []int{6, 8}))
 	fmt.Println(insert([][]int{{3, 5}, {12, 15}}, []int{6, 8}))
 }
+
+func TestMaxOperations(t *testing.T) {
+	fmt.Println(maxOperations([]int{2, 5, 4, 4, 1, 3, 4, 4, 1, 4, 4, 1, 2, 1, 2, 2, 3, 2, 4, 2}, 3))
+}

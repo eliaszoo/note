@@ -16,3 +16,7 @@ func TestCalculate(t *testing.T) {
 	s := "-2+ 1"
 	t.Log(calculate(s))
 }
+
+func TestDecodeString2(t *testing.T) {
+	t.Log(decodeString2("3[a2[c]]"))
+}

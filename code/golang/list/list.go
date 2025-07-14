@@ -245,6 +245,25 @@ func isPalindrome(head *ListNode) bool {
 	return true
 }
 
+func reverseList2(head *ListNode) *ListNode {
+	if head == nil {
+		return nil
+	}
+
+	p := head
+	q := p.Next
+	p.Next = nil
+	for q != nil {
+		t := q.Next
+
+		q.Next = p
+
+		p = q
+		q = t
+	}
+	return p
+}
+
 func main() {
 	list := NewList([]int{1, 2, 3, 4, 5})
 	PrintList(list)
