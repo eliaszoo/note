@@ -264,6 +264,34 @@ func reverseList2(head *ListNode) *ListNode {
 	return p
 }
 
+func pairSum(head *ListNode) int {
+	if head == nil {
+		return 0
+	}
+
+	var prev *ListNode
+	fast, slow := head, head
+	for fast != nil && fast.Next != nil {
+		prev = slow
+		slow = slow.Next
+		fast = fast.Next.Next
+	}
+
+	prev.Next = nil
+	l2 := reverse(slow)
+	p, q := head, l2
+	var ret int
+	for p != nil && q != nil {
+		val := p.Val + q.Val
+		if val > ret {
+			ret = val
+		}
+		p = p.Next
+		q = q.Next
+	}
+	return ret
+}
+
 func main() {
 	list := NewList([]int{1, 2, 3, 4, 5})
 	PrintList(list)

@@ -185,3 +185,27 @@ func (this *Trie) StartsWith(prefix string) bool {
 	}
 	return true
 }
+
+func minReorder(n int, connections [][]int) int {
+	var count int
+	visited := make([]bool, n-1)
+	minReorderdfs(n, connections, visited, 0, &count)
+	return count
+}
+
+func minReorderdfs(n int, connections [][]int, visited []bool, target int, count *int) {
+	for i := 0; i < n-1; i++ {
+		if visited[i] {
+			continue
+		}
+
+		if connections[i][1] == target {
+			visited[i] = true
+			minReorderdfs(n, connections, visited, connections[i][0], count)
+		} else if connections[i][0] == target {
+			visited[i] = true
+			*count++
+			minReorderdfs(n, connections, visited, connections[i][1], count)
+		}
+	}
+}

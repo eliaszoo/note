@@ -508,3 +508,29 @@ func maxOperations(nums []int, k int) int {
 	}
 	return ret
 }
+
+func canVisitAllRooms(rooms [][]int) bool {
+	n := len(rooms)
+	if n == 0 || n == 1 {
+		return true
+	}
+
+	keys := []int{0}
+	for i := 0; i < len(keys); i++ {
+		key := keys[i]
+		for _, k := range rooms[key] {
+			exist := false
+			for _, n := range keys {
+				if n == k {
+					exist = true
+					break
+				}
+			}
+			if !exist {
+				keys = append(keys, k)
+			}
+		}
+	}
+
+	return len(keys) == n
+}

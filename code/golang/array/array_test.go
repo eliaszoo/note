@@ -75,3 +75,7 @@ func TestInsert(t *testing.T) {
 func TestMaxOperations(t *testing.T) {
 	fmt.Println(maxOperations([]int{2, 5, 4, 4, 1, 3, 4, 4, 1, 4, 4, 1, 2, 1, 2, 2, 3, 2, 4, 2}, 3))
 }
+
+func TestCanVisitAllRooms(t *testing.T) {
+	fmt.Println(canVisitAllRooms([][]int{{2, 3}, {}, {2}, {1, 3}}))
+}
