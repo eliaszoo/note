@@ -79,3 +79,7 @@ func TestMaxOperations(t *testing.T) {
 func TestCanVisitAllRooms(t *testing.T) {
 	fmt.Println(canVisitAllRooms([][]int{{2, 3}, {}, {2}, {1, 3}}))
 }
+
+func TestEraseOverlapIntervals(t *testing.T) {
+	fmt.Println(eraseOverlapIntervals([][]int{{0, 2}, {1, 3}, {2, 4}, {3, 5}, {4, 6}}))
+}

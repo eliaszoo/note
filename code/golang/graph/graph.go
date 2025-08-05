@@ -209,3 +209,64 @@ func minReorderdfs(n int, connections [][]int, visited []bool, target int, count
 		}
 	}
 }
+
+func nearestExit(maze [][]byte, entrance []int) int {
+	return bfs(maze, entrance)
+}
+
+func bfs(maze [][]byte, entrance []int) int {
+	visited := make([][]bool, len(maze))
+	for i := 0; i < len(visited); i++ {
+		visited[i] = make([]bool, len(maze[i]))
+	}
+
+	isBoard := func(i, j int) bool {
+		if i == 0 || j == 0 {
+			return true
+		}
+
+		if i == len(maze)-1 || j == len(maze[0])-1 {
+			return true
+		}
+		return false
+	}
+
+	direct := [][2]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
+	queue := make([][]int, 0)
+	queue = append(queue, entrance)
+	visited[entrance[0]][entrance[1]] = true
+
+	var ret int
+	for len(queue) > 0 {
+		size := len(queue)
+		ret++
+		for n := 0; n < size; n++ {
+			p := queue[0]
+			queue = queue[1:]
+
+			for i := 0; i < len(direct); i++ {
+				x := p[0] + direct[i][0]
+				y := p[1] + direct[i][1]
+				if x < 0 || y < 0 || x >= len(maze) || y >= len(maze[0]) {
+					continue
+				}
+
+				if maze[x][y] == '+' {
+					continue
+				}
+
+				if visited[x][y] {
+					continue
+				}
+
+				if isBoard(x, y) {
+					return ret
+				}
+
+				visited[x][y] = true
+				queue = append(queue, []int{x, y})
+			}
+		}
+	}
+	return -1
+}

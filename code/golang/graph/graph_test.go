@@ -29,29 +29,18 @@ func TestCanFinish(t *testing.T) {
 }
 
 func TestTrie(t *testing.T) {
-	trie := Constructor()
-
-	trie.Insert("apple")
-	fmt.Println(trie.Search("apple"))
-	fmt.Println(trie.Search("app"))
-	fmt.Println(trie.StartsWith("app"))
-	trie.Insert("app")
-	fmt.Println(trie.Search("app"))
-
-	/*trie.Insert("app")
-	trie.Insert("beer")
-	trie.Insert("add")
-	trie.Insert("jam")
-	trie.Insert("rental")
-
-	fmt.Println(trie.Search("app"))
-	fmt.Println(trie.Search("add"))
-	fmt.Println(trie.Search("applepie"))
-	fmt.Println(trie.Search("rest"))
-	fmt.Println(trie.Search("jan"))
-	fmt.Println(trie.StartsWith("app"))*/
 }
 
 func TestMinOrder(t *testing.T) {
 	fmt.Println(minReorder(6, [][]int{{0, 1}, {1, 3}, {2, 3}, {4, 0}, {4, 5}}))
+}
+
+func TestNearestExit(t *testing.T) {
+	fmt.Println(nearestExit([][]byte{
+		{'+', '.', '+', '+', '+', '+', '+'},
+		{'+', '.', '+', '.', '.', '.', '+'},
+		{'+', '.', '+', '.', '+', '.', '+'},
+		{'+', '.', '.', '.', '+', '.', '+'},
+		{'+', '+', '+', '+', '+', '.', '+'},
+	}, []int{0, 1}))
 }

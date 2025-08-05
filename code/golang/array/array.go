@@ -534,3 +534,29 @@ func canVisitAllRooms(rooms [][]int) bool {
 
 	return len(keys) == n
 }
+
+// https://leetcode.cn/problems/non-overlapping-intervals/?envType=study-plan-v2&envId=leetcode-75 无重叠区间
+func eraseOverlapIntervals(intervals [][]int) int {
+	n := len(intervals)
+	if n == 0 {
+		return 0
+	}
+
+	sort.Slice(intervals, func(i, j int) bool {
+		return intervals[i][0] < intervals[j][0]
+	})
+
+	var ret int
+	prev := intervals[0][1]
+	for i := 1; i < n; i++ {
+		if intervals[i][0] < prev {
+			ret++
+			prev = min(prev, intervals[i][1])
+		} else {
+			prev = max(prev, intervals[i][1])
+		}
+
+	}
+
+	return ret
+}
