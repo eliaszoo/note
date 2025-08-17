@@ -560,3 +560,109 @@ func eraseOverlapIntervals(intervals [][]int) int {
 
 	return ret
 }
+
+func subarraySum(nums []int, k int) int {
+	if len(nums) == 0 {
+		return 0
+	}
+
+	ret := 0
+	l, r := 0, 0
+	sum := nums[0]
+	for r < len(nums) && l <= r {
+		if sum == k {
+			ret++
+			sum -= nums[l]
+			l++
+		} else if sum < k {
+			r++
+			if r >= len(nums) {
+				break
+			}
+			sum += nums[r]
+		} else {
+			sum -= nums[l]
+			l++
+		}
+	}
+
+	return ret
+}
+
+func maxSlidingWindow(nums []int, k int) []int {
+	queue := make([]int, 0, k)
+
+	in := func(num int) {
+		if len(queue) == 0 {
+			queue = append(queue, num)
+			return
+		}
+
+		i := len(queue) - 1
+		for ; i >= 0; i-- {
+			if queue[i] >= num {
+				break
+			}
+		}
+		queue = queue[:i+1]
+		queue = append(queue, num)
+	}
+
+	ret := make([]int, 0, len(nums))
+	for i := 0; i < k; i++ {
+		in(nums[i])
+	}
+
+	ret = append(ret, queue[0])
+	for i := k; i < len(nums); i++ {
+		if queue[0] == nums[i-k] {
+			queue = queue[1:]
+		}
+
+		in(nums[i])
+		ret = append(ret, queue[0])
+	}
+	return ret
+}
+
+func spiralOrder(matrix [][]int) []int {
+	m, n := len(matrix), len(matrix[0])
+
+	l, r := 0, n-1
+	u, d := 0, m-1
+	ret := make([]int, 0, m*n)
+	for {
+		for i := l; i <= r; i++ {
+			ret = append(ret, matrix[u][i])
+		}
+		u++
+		if u > d {
+			break
+		}
+
+		for i := u; i <= d; i++ {
+			ret = append(ret, matrix[i][r])
+		}
+		r--
+		if l > r {
+			break
+		}
+
+		for i := r; i >= l; i-- {
+			ret = append(ret, matrix[d][i])
+		}
+		d--
+		if u > d {
+			break
+		}
+
+		for i := d; i >= u; i-- {
+			ret = append(ret, matrix[i][l])
+		}
+		l++
+		if l > r {
+			break
+		}
+	}
+	return ret
+}

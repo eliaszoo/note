@@ -292,6 +292,29 @@ func pairSum(head *ListNode) int {
 	return ret
 }
 
+func swapPairs2(head *ListNode) *ListNode {
+	dummy := new(ListNode)
+	dummy.Next = head
+
+	prev, cur := dummy, head
+	for cur != nil {
+		if cur.Next != nil {
+			next := cur.Next.Next
+
+			prev.Next = cur.Next
+			cur.Next.Next = cur
+			cur.Next = nil
+
+			prev = cur
+			cur = next
+		} else {
+			prev.Next = cur
+			cur = cur.Next
+		}
+	}
+	return dummy.Next
+}
+
 func main() {
 	list := NewList([]int{1, 2, 3, 4, 5})
 	PrintList(list)

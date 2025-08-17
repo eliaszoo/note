@@ -83,3 +83,15 @@ func TestCanVisitAllRooms(t *testing.T) {
 func TestEraseOverlapIntervals(t *testing.T) {
 	fmt.Println(eraseOverlapIntervals([][]int{{0, 2}, {1, 3}, {2, 4}, {3, 5}, {4, 6}}))
 }
+
+func TestSubarraySum(t *testing.T) {
+	fmt.Println(subarraySum([]int{1, 2, 3}, 3))
+}
+
+func TestMaxSlidingWindow(t *testing.T) {
+	fmt.Println(maxSlidingWindow([]int{1, -1}, 1))
+}
+
+func TestSpiralOrder(t *testing.T) {
+	fmt.Println(spiralOrder([][]int{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}}))
+}
