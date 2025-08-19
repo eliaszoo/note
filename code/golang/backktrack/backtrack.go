@@ -538,6 +538,43 @@ func backtrackSudo(board [][]byte, i int) bool {
 	return backtrackSudo(board, i+1)
 }
 
+func exist2(board [][]byte, word string) bool {
+	for i := 0; i < len(board); i++ {
+		for j := 0; j < len(board[i]); j++ {
+			if board[i][j] == word[0] {
+				if backtracking3(board, word, i, j, 1) {
+					return true
+				}
+			}
+		}
+	}
+	return false
+}
+
+func backtracking3(board [][]byte, word string, i, j, idx int) bool {
+	if idx >= len(word) {
+		return true
+	}
+
+	direct := [][2]int{{0, 1}, {0, -1}, {1, 0}, {-1, 0}}
+	for k := 0; k < len(direct); k++ {
+		x := i + direct[k][0]
+		y := j + direct[k][1]
+		if x < 0 || y < 0 || x >= len(board) || y >= len(board[0]) {
+			continue
+		}
+
+		if board[x][y] == word[idx] {
+			find := backtracking3(board, word, x, y, idx+1)
+			if find {
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
 func main() {
 	/*strs := letterCombinations("23")
 	fmt.Println(strs)

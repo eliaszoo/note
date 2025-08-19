@@ -493,6 +493,61 @@ func maxPathSumFunc(root *TreeNode, ret *int) int {
 	return root.Val + max(lg, rg)
 }
 
+func flatten2(root *TreeNode) {
+	cur := root
+	for cur != nil {
+		left := cur.Left
+		right := cur.Right
+		if left == nil {
+			cur = cur.Right
+			continue
+		}
+
+		p := left
+		for ; p != nil && p.Right != nil; p = p.Right {
+		}
+
+		cur.Left = nil
+		cur.Right = left
+		p.Right = right
+
+		cur = cur.Right
+	}
+}
+
+func pathSum2(root *TreeNode, targetSum int) int {
+	var count int
+	travsal(root, targetSum, &count)
+	return count
+}
+
+func travsal(root *TreeNode, targetSum int, count *int) {
+	if root == nil {
+		return
+	}
+
+	cur := root
+	pathSumFunc(cur, targetSum, 0, count)
+
+	travsal(root.Left, targetSum, count)
+	travsal(root.Right, targetSum, count)
+}
+
+func pathSumFunc(root *TreeNode, targetSum, sum int, count *int) {
+	if root == nil {
+		return
+	}
+
+	// 需要在当前层加，不能传递给下一层
+	sum += root.Val
+	if sum == targetSum {
+		*count++
+	}
+
+	pathSumFunc(root.Left, targetSum, sum, count)
+	pathSumFunc(root.Right, targetSum, sum, count)
+}
+
 func main() {
 	root := build([]int{1, 2, 3, 4, 5, 6, 7}, 0)
 	var tmp []int
